@@ -29,4 +29,8 @@
 		<Folder Include="Controllers\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Artexitus.ProblemMicroservice.Application\Artexitus.ProblemMicroservice.Application.csproj" />
+	</ItemGroup>
+
 </Project>

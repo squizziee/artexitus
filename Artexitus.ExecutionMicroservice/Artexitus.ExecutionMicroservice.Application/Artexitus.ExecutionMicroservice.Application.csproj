@@ -12,4 +12,9 @@
 		<PackageReference Include="MediatR" Version="12.4.1" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Artexitus.ExecutionMicroservice.Domain\Artexitus.ExecutionMicroservice.Domain.csproj" />
+	  <ProjectReference Include="..\Artexitus.ExecutionMicroservice.Infrastructure\Artexitus.ExecutionMicroservice.Infrastructure.csproj" />
+	</ItemGroup>
+
 </Project>

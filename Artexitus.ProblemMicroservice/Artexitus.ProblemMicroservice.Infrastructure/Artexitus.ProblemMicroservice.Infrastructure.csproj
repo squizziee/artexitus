@@ -14,4 +14,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Artexitus.ProblemMicroservice.Domain\Artexitus.ProblemMicroservice.Domain.csproj" />
+	</ItemGroup>
+
 </Project>
