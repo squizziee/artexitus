@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35506.116 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.API", "Artexitus.IdentityMicroservice\Artexitus.IdentityMicroservice.API.csproj", "{062D3099-C2EC-4FB8-A105-DA813ED5E70F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.API", "Artexitus.IdentityMicroservice.API\Artexitus.IdentityMicroservice.API.csproj", "{062D3099-C2EC-4FB8-A105-DA813ED5E70F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.Domain", "Artexitus.IdentityMicroservice.Domain\Artexitus.IdentityMicroservice.Domain.csproj", "{1603ED0C-24BE-48EC-9FE9-FAF729010642}"
 EndProject

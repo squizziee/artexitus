@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Contracts\Artexitus.IdentityMicroservice.Contracts.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Domain\Artexitus.IdentityMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Infrastructure\Artexitus.IdentityMicroservice.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
