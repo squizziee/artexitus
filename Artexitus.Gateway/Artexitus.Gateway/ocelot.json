@@ -1,0 +1,44 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/identity",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "${IDENTITY_MICROSERVICE_PORT}"
+        }
+      ],
+      "UpstreamPathTemplate": "/auth",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/problem",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "${PROBLEM_MICROSERVICE_PORT}"
+        }
+      ],
+      "UpstreamPathTemplate": "/problem",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "PATCH", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/execution",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "${EXECUTION_MICROSERVICE_PORT}"
+        }
+      ],
+      "UpstreamPathTemplate": "/execute",
+      "UpstreamHttpMethod": [ "GET", "POST" ]
+    }
+  ],
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "${GATEWAY_BASE_URL}"
+  }
+}
