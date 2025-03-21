@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.ProblemMicroservice.API", "Artexitus.ProblemMicroservice.API\Artexitus.ProblemMicroservice.API.csproj", "{2ABE3202-E3F2-4AFE-9F45-ABDBD671BA66}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.ProblemMicroservice.Domain", "Artexitus.ProblemMicroservice.Domain\Artexitus.ProblemMicroservice.Domain.csproj", "{1ACF7B9B-97A2-4ED5-9033-84A936D39C6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.ProblemMicroservice.Application", "Artexitus.ProblemMicroservice.Application\Artexitus.ProblemMicroservice.Application.csproj", "{0013B8E3-DB69-4EB3-A385-C5A09FC0EB5F}"
 EndProject
@@ -21,10 +19,6 @@ Global
 		{2ABE3202-E3F2-4AFE-9F45-ABDBD671BA66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ABE3202-E3F2-4AFE-9F45-ABDBD671BA66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ABE3202-E3F2-4AFE-9F45-ABDBD671BA66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1ACF7B9B-97A2-4ED5-9033-84A936D39C6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1ACF7B9B-97A2-4ED5-9033-84A936D39C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1ACF7B9B-97A2-4ED5-9033-84A936D39C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1ACF7B9B-97A2-4ED5-9033-84A936D39C6D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0013B8E3-DB69-4EB3-A385-C5A09FC0EB5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0013B8E3-DB69-4EB3-A385-C5A09FC0EB5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0013B8E3-DB69-4EB3-A385-C5A09FC0EB5F}.Release|Any CPU.ActiveCfg = Release|Any CPU

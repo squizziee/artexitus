@@ -27,11 +27,11 @@ services:
         image: mongo:latest
         container_name: execution_microservice_database
         ports:
-            - "27017:27017"
+            - "${EXECUTION_MICROSERVICE_DATABASE_PORT}:${EXECUTION_MICROSERVICE_DATABASE_PORT_INTERNAL}"
         restart: always
         environment:
-            - MONGO_INITDB_ROOT_USERNAME=mongoadmin
-            - MONGO_INITDB_ROOT_PASSWORD=mnbv0987
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_DEFAULT_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DEFAULT_PASSWORD}
         volumes:
             - execution_microservice_volume:/data/db
 

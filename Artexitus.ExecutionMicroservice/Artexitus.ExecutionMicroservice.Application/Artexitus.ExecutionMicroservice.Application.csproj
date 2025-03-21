@@ -14,7 +14,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Artexitus.ExecutionMicroservice.Domain\Artexitus.ExecutionMicroservice.Domain.csproj" />
-	  <ProjectReference Include="..\Artexitus.ExecutionMicroservice.Infrastructure\Artexitus.ExecutionMicroservice.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>

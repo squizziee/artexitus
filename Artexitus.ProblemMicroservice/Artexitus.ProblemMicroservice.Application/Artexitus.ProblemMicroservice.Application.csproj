@@ -13,7 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Artexitus.ProblemMicroservice.Domain\Artexitus.ProblemMicroservice.Domain.csproj" />
 	  <ProjectReference Include="..\Artexitus.ProblemMicroservice.Infrastructure\Artexitus.ProblemMicroservice.Infrastructure.csproj" />
 	</ItemGroup>
 
