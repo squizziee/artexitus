@@ -15,7 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Domain\Artexitus.IdentityMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Application\Artexitus.IdentityMicroservice.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

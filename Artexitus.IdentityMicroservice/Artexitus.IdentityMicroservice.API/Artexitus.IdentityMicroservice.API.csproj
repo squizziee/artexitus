@@ -18,6 +18,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
@@ -29,6 +33,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Artexitus.IdentityMicroservice.Application\Artexitus.IdentityMicroservice.Application.csproj" />
     <ProjectReference Include="..\Artexitus.IdentityMicroservice.Contracts\Artexitus.IdentityMicroservice.Contracts.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Domain\Artexitus.IdentityMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Infrastructure\Artexitus.IdentityMicroservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

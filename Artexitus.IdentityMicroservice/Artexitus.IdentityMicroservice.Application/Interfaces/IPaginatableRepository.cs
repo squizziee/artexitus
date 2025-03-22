@@ -1,8 +1,8 @@
 ﻿using Artexitus.IdentityMicroservice.Domain.Entities;
 
-namespace Artexitus.IdentityMicroservice.Domain.Interfaces
+namespace Artexitus.IdentityMicroservice.Application.Interfaces
 {
-    public interface IPaginatableRepository<TEntity> where TEntity : EntityBase
+    public interface IPaginatableRepository<TEntity> where TEntity : class
     {
         Task<IPaginatedEnumerable<TEntity>> GetPaginatedAsync(int pageNumber, int pageSize, 
             CancellationToken cancellationToken);
