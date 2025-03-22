@@ -1,0 +1,6 @@
+services:
+  artexitus.identitymicroservice.api:
+    image: ${DOCKER_REGISTRY-}artexitusidentitymicroserviceapi
+    build:
+      context: ..
+      dockerfile: Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Dockerfile

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116 d17.12
+VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.API", "Artexitus.IdentityMicroservice.API\Artexitus.IdentityMicroservice.API.csproj", "{062D3099-C2EC-4FB8-A105-DA813ED5E70F}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.Infrastructure", "Artexitus.IdentityMicroservice.Infrastructure\Artexitus.IdentityMicroservice.Infrastructure.csproj", "{966D0A69-8146-4FA2-B9D7-83C1F68099EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.Contracts", "Artexitus.IdentityMicroservice.Contracts\Artexitus.IdentityMicroservice.Contracts.csproj", "{37D7737B-D318-4B54-832B-7003B48380B1}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DC41806E-6DA9-4C26-8079-3207860BE20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{37D7737B-D318-4B54-832B-7003B48380B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37D7737B-D318-4B54-832B-7003B48380B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37D7737B-D318-4B54-832B-7003B48380B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

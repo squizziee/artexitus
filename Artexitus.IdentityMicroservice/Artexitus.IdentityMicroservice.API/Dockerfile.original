@@ -4,21 +4,18 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5000
+EXPOSE 5001
 
 
 # Этот этап используется для сборки проекта службы
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/"]
-COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Application/Artexitus.IdentityMicroservice.Application.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Application/"]
-COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Contracts/Artexitus.IdentityMicroservice.Contracts.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Contracts/"]
-COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Domain/Artexitus.IdentityMicroservice.Domain.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Domain/"]
-RUN dotnet restore "./Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj"
+COPY ["Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj", "Artexitus.IdentityMicroservice.API/"]
+RUN dotnet restore "./Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj"
 COPY . .
-WORKDIR "/src/Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API"
+WORKDIR "/src/Artexitus.IdentityMicroservice.API"
 RUN dotnet build "./Artexitus.IdentityMicroservice.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
