@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Artexitus.IdentityMicroservice.Application\Artexitus.IdentityMicroservice.Application.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Contracts\Artexitus.IdentityMicroservice.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroserv
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DC41806E-6DA9-4C26-8079-3207860BE20D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artexitus.IdentityMicroservice.Tests", "Artexitus.IdentityMicroservice.Tests\Artexitus.IdentityMicroservice.Tests.csproj", "{200541FE-11DD-407A-B308-F9DABB610A81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC41806E-6DA9-4C26-8079-3207860BE20D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{200541FE-11DD-407A-B308-F9DABB610A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{200541FE-11DD-407A-B308-F9DABB610A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{200541FE-11DD-407A-B308-F9DABB610A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{200541FE-11DD-407A-B308-F9DABB610A81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

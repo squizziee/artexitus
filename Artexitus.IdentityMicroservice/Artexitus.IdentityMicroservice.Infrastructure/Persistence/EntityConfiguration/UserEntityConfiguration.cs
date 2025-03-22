@@ -8,12 +8,14 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.EntityConfig
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.ToTable("Users");
+
             builder
                 .HasKey(u => u.Id);
 
-            //builder
-            //    .HasQueryFilter(u => u.DeletedAt == null);
-            
+            builder
+                .HasQueryFilter(u => u.DeletedAt == null);
+
             builder
                 .Property(u => u.Email)
                 .HasMaxLength(255);
