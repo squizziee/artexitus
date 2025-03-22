@@ -10,6 +10,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.EntityConfig
         {
             builder
                 .HasKey(u => u.Id);
+
+            //builder
+            //    .HasQueryFilter(u => u.DeletedAt == null);
             
             builder
                 .Property(u => u.Email)
