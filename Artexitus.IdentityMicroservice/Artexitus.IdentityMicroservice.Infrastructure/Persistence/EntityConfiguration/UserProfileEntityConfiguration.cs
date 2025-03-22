@@ -8,9 +8,11 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.EntityConfig
     {
         public void Configure(EntityTypeBuilder<UserProfile> builder)
         {
-
             builder
                .HasKey(p => p.Id);
+
+            builder
+                .HasQueryFilter(u => u.DeletedAt == null);
 
             builder
                 .Property(p => p.Username)

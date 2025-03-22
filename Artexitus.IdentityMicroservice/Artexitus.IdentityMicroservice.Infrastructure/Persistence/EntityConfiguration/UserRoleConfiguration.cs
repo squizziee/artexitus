@@ -12,6 +12,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.EntityConfig
                .HasKey(r => r.Id);
 
             builder
+                .HasQueryFilter(u => u.DeletedAt == null);
+
+            builder
                 .Property(r => r.Name)
                 .HasMaxLength(255);
 

@@ -8,8 +8,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.EntityConfig
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("Users");
-
             builder
                 .HasKey(u => u.Id);
 
