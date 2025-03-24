@@ -374,5 +374,268 @@ namespace Artexitus.IdentityMicroservice.Tests
             Assert.True(examinedUser.PasswordHash != updatedUser.PasswordHash);
             Assert.Null(examinedUser.LastUpdatedAt);
         }
+
+        [Fact]
+        public async Task GetUsers_ShouldSucceed()
+        {
+            FlushContext();
+
+            var userCount = 10;
+
+            for (int i = 0; i < userCount; i++)
+            {
+                var newUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = $"test{i}@email.com",
+                    PasswordHash = $"test_hash{i}",
+                    Profile = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = $"test_username{i}",
+                        Role = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = $"test_role{i}",
+                            Description = $"test_description{i}"
+                        }
+                    }
+                };
+                await _userRepository.AddAsync(newUser, CancellationToken.None);
+            }
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var result = await _userRepository.GetAllAsync(CancellationToken.None);
+
+            Assert.NotNull(result);
+            Assert.Equal(userCount, result.Count());
+        }
+
+        [Fact]
+        public async Task GetUserById_ShouldSucceed()
+        {
+            FlushContext();
+
+            var userId = Guid.NewGuid();
+
+            var newUser = new User
+            {
+                Id = userId,
+                Email = "test@email.com",
+                PasswordHash = "test_hash",
+                Profile = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Username = "test_username",
+                    Role = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "test_role",
+                        Description = "test_description"
+                    }
+                }
+            };
+
+            await _userRepository.AddAsync(newUser, CancellationToken.None);
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var result = await _userRepository.GetByIdAsync(userId, CancellationToken.None);
+
+            Assert.NotNull(result);
+            Assert.Equal(newUser.Email, result.Email);
+            Assert.Equal(newUser.PasswordHash, result.PasswordHash);
+            Assert.Equal(newUser.ProfileId, result.ProfileId);
+        }
+
+        [Fact]
+        public async Task GetUserById_DoesNotExist_ShouldReturnNull()
+        {
+            FlushContext();
+
+            var userId = Guid.NewGuid();
+
+            var newUser = new User
+            {
+                Id = userId,
+                Email = "test@email.com",
+                PasswordHash = "test_hash",
+                Profile = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Username = "test_username",
+                    Role = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "test_role",
+                        Description = "test_description"
+                    }
+                }
+            };
+
+            var result = await _userRepository.GetByIdAsync(userId, CancellationToken.None);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetUsersPaginated_ShouldSucceed()
+        {
+            FlushContext();
+
+            var userCount = 10;
+
+            for (int i = 0; i < userCount; i++)
+            {
+                var newUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = $"test{i}@email.com",
+                    PasswordHash = $"test_hash{i}",
+                    Profile = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = $"test_username{i}",
+                        Role = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = $"test_role{i}",
+                            Description = $"test_description{i}"
+                        }
+                    }
+                };
+                await _userRepository.AddAsync(newUser, CancellationToken.None);
+            }
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var pageNumber = 0;
+            var pageSize = 3;
+
+            var result = await _userRepository.GetPaginatedAsync(pageNumber, pageSize, CancellationToken.None);
+
+            Assert.NotNull(result);
+            Assert.Equal(pageSize, result.Items.Count());
+            Assert.Equal(pageNumber, result.PageNumber);
+            Assert.Equal(10 / 3 + 1, result.TotalPages);
+        }
+
+        [Fact]
+        public async Task GetUsersPaginated_PageNumberTooSmall_ShouldThrow()
+        {
+            FlushContext();
+
+            var userCount = 10;
+
+            for (int i = 0; i < userCount; i++)
+            {
+                var newUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = $"test{i}@email.com",
+                    PasswordHash = $"test_hash{i}",
+                    Profile = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = $"test_username{i}",
+                        Role = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = $"test_role{i}",
+                            Description = $"test_description{i}"
+                        }
+                    }
+                };
+                await _userRepository.AddAsync(newUser, CancellationToken.None);
+            }
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var pageNumber = -1;
+            var pageSize = 3;
+
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
+                async () => await _userRepository.GetPaginatedAsync(pageNumber, pageSize, CancellationToken.None)
+            );
+        }
+
+        [Fact]
+        public async Task GetUsersPaginated_PageNumberTooBig_ShouldThrow()
+        {
+            FlushContext();
+
+            var userCount = 10;
+
+            for (int i = 0; i < userCount; i++)
+            {
+                var newUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = $"test{i}@email.com",
+                    PasswordHash = $"test_hash{i}",
+                    Profile = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = $"test_username{i}",
+                        Role = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = $"test_role{i}",
+                            Description = $"test_description{i}"
+                        }
+                    }
+                };
+                await _userRepository.AddAsync(newUser, CancellationToken.None);
+            }
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var pageNumber = 5;
+            var pageSize = 3;
+
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
+                async () => await _userRepository.GetPaginatedAsync(pageNumber, pageSize, CancellationToken.None)
+            );
+        }
+
+        [Fact]
+        public async Task GetUsersPaginated_PageSizeTooSmall_ShouldThrow()
+        {
+            FlushContext();
+
+            var userCount = 10;
+
+            for (int i = 0; i < userCount; i++)
+            {
+                var newUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = $"test{i}@email.com",
+                    PasswordHash = $"test_hash{i}",
+                    Profile = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = $"test_username{i}",
+                        Role = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = $"test_role{i}",
+                            Description = $"test_description{i}"
+                        }
+                    }
+                };
+                await _userRepository.AddAsync(newUser, CancellationToken.None);
+            }
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var pageNumber = -1;
+            var pageSize = 0;
+
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
+                async () => await _userRepository.GetPaginatedAsync(pageNumber, pageSize, CancellationToken.None)
+            );
+        }
     }
 }

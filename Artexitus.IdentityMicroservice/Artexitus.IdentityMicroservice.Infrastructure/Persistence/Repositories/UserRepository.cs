@@ -51,9 +51,84 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
                 .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
         }
 
+        public Task<IPaginatedEnumerable<User>> GetPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
+        {
+            if (pageNumber < 0 || pageNumber * pageSize > _context.Users.Count())
+            {
+                throw new ArgumentOutOfRangeException($"Page number {pageNumber} is invalid");
+            }
+
+            if (pageSize < 1)
+            {
+                throw new ArgumentOutOfRangeException($"Page size {pageSize} is invalid");
+            }
+
+            var chunk = _context.Users
+                .Include(u => u.Profile)
+                        .ThenInclude(p => p.Role)
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .AsEnumerable();
+
+            var totalPages = _context.Users.Count() / pageSize;
+
+            if (_context.Users.Count() % pageSize > 0)
+            {
+                ++totalPages;
+            }
+
+            IPaginatedEnumerable<User> result = new PaginatedEnumerable<User>
+            {
+                Items = chunk,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return Task.FromResult(result);
+        }
+
         public async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public Task<IEnumerable<User>> SearchAsync(ISpecification<User> specification)
+        {
+            var result = _context.Users
+                .Include(u => u.Profile)
+                        .ThenInclude(p => p.Role)
+                .Where(u => specification.IsSatisfiedBy(u))
+                .AsEnumerable();
+
+            return Task.FromResult(result);
+        }
+
+        public Task<IPaginatedEnumerable<User>> SearchPaginatedAsync(
+            ISpecification<User> specification, int pageNumber, int pageSize)
+        {
+            var chunk = _context.Users
+                .Include(u => u.Profile)
+                        .ThenInclude(p => p.Role)
+                .Where(u => specification.IsSatisfiedBy(u))
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .AsEnumerable();
+
+            var totalPages = _context.Users.Count() / pageSize;
+
+            if (totalPages % pageSize > 0)
+            {
+                ++totalPages;
+            }
+
+            IPaginatedEnumerable<User> result = new PaginatedEnumerable<User>
+            {
+                Items = chunk,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return Task.FromResult(result);
         }
 
         public async Task SoftDeleteAsync(User entity, CancellationToken cancellationToken)

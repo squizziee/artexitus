@@ -2,7 +2,8 @@
 
 namespace Artexitus.IdentityMicroservice.Application.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<User>, IPaginatableRepository<User>, 
+        ISearchableRepository<User>
     {
     }
 }
