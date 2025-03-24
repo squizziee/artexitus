@@ -4,5 +4,6 @@ namespace Artexitus.IdentityMicroservice.Application.Interfaces
 {
     public interface IUserRoleRepository : IRepository<UserRole>
     {
+        Task<UserRole> GetDefaultRoleAsync(CancellationToken cancellationToken);
     }
 }

@@ -1,0 +1,22 @@
+﻿{
+  "Jwt": {
+    "AccessToken": {
+      "Issuer": "ArtexitusIdentity",
+      "Audience": "ArtexitusClient",
+      "ExpirationTimeInMinutes": 5,
+      "Key": "165d1f9wer1gbw9efg81we9tg9we1r9g19e1rgh919erh19e1r9h1e9r1h91e9h19w1e9th129er1he9rh48e4weh4he1gwe9rg"
+    },
+    "RefreshToken": {
+      "Issuer": "ArtexitusIdentity",
+      "Audience": "ArtexitusClient",
+      "ExpirationTimeInDays": 7,
+      "Key": "165d1f9wer1gbw9efg81we9tg9we1r9g19e1rgh919erh19e1r9h1e9r1h91e9h19w1e9th129er1he9rh48e4weh4he1gwe9rg"
+    },
+    "ActivationToken": {
+      "Issuer": "ArtexitusIdentity",
+      "Audience": "ArtexitusClient",
+      "ExpirationTimeInHours": 72,
+      "Key": "165d1f9wer1gbw9efg81we9tg9we1r9g19e1rgh919erh19e1r9h1e9r1h91e9h19w1e9th129er1he9rh48e4weh4he1gwe9rg"
+    }
+  }
+}

@@ -4,6 +4,7 @@ using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDatabaseContext))]
-    partial class IdentityDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250324153615_AddActivationQueryFilterAndRoleSeeding")]
+    partial class AddActivationQueryFilterAndRoleSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

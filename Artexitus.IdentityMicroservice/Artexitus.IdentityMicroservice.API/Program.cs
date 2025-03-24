@@ -1,14 +1,19 @@
+using Artexitus.IdentityMicroservice.Application.Extensions;
 using Artexitus.IdentityMicroservice.Infrastructure.Extensions;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("tokensettings.json", optional: false, reloadOnChange: true);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddInfrastructureConfigSections(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

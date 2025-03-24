@@ -4,6 +4,7 @@ using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDatabaseContext))]
-    partial class IdentityDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250324110330_AddAuthFiedlsToUser")]
+    partial class AddAuthFiedlsToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,36 +140,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d222b881-4310-47c5-8ca3-3ed5aebb3154"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 24, 15, 36, 14, 684, DateTimeKind.Unspecified).AddTicks(3424), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Normal user",
-                            Name = "Basic"
-                        },
-                        new
-                        {
-                            Id = new Guid("6326ea7f-b665-4919-a02e-853dbd584bbe"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 24, 15, 36, 14, 684, DateTimeKind.Unspecified).AddTicks(3424), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Problem author. Has every right of the normal user and can create problems",
-                            Name = "Author"
-                        },
-                        new
-                        {
-                            Id = new Guid("aba006b7-6262-44dc-8e2d-adf5a6a9b04c"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 24, 15, 36, 14, 684, DateTimeKind.Unspecified).AddTicks(3424), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Has right to every action possible except those that are dangerous to system integrity",
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("a9f7b329-c8a6-41d3-af2f-ac28ae185b0e"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 24, 15, 36, 14, 684, DateTimeKind.Unspecified).AddTicks(3424), new TimeSpan(0, 0, 0, 0, 0)),
-                            Description = "Preferred not to use directly. Should be used as an authorization blocker to certain endpoints",
-                            Name = "ARTSYS"
-                        });
                 });
 
             modelBuilder.Entity("Artexitus.IdentityMicroservice.Domain.Entities.User", b =>

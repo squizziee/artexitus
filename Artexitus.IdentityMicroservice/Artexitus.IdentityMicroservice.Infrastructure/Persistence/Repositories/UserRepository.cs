@@ -43,12 +43,36 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
             );
         }
 
+        public async Task<User?> GetByActivationTokenAsync(string activationToken, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .SingleOrDefaultAsync(u => u.ActivationToken == activationToken, cancellationToken);
+        }
+
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
+        }
+
         public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Users
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+        }
+
+        public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken, cancellationToken);
+        }
+
+        public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .SingleOrDefaultAsync(u => u.Profile.Username == username, cancellationToken);
         }
 
         public Task<IPaginatedEnumerable<User>> GetPaginatedAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)

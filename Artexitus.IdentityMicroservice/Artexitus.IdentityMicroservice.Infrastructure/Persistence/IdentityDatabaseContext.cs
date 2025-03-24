@@ -1,6 +1,7 @@
 ﻿using Artexitus.IdentityMicroservice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Threading;
 
 namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence
 {

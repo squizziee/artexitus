@@ -6,6 +6,9 @@
         public Guid ProfileId { get; set; }
         public UserProfile Profile { get; set; }
         public string PasswordHash { get; set; } = string.Empty;
+        public string RefreshToken { get; set; } = string.Empty;
+        public string? ActivationToken { get; set; }
+        public bool IsActivated { get; set; }
 
     }
 }
