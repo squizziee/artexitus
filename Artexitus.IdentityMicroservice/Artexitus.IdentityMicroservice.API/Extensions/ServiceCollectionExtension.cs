@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FluentValidation;
+using System.Reflection;
+using Artexitus.IdentityMicroservice.API.Middleware;
 
 namespace Artexitus.IdentityMicroservice.API.Extensions
 {
@@ -43,6 +46,20 @@ namespace Artexitus.IdentityMicroservice.API.Extensions
                 .AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin", "ARTSYS"))
                 .AddPolicy("Reserved", policy => policy.RequireRole("ARTSYS"));
 
+
+            return services;
+        }
+
+        public static IServiceCollection AddAutomatedRequestValidation(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddScoped<ValidateFilter>();
+            services.AddControllers(
+                options =>
+                {
+                    options.Filters.Add<ValidateFilter>();
+                }
+            );
 
             return services;
         }

@@ -1,7 +1,6 @@
 ﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
-using Artexitus.IdentityMicroservice.Contracts.Helpers;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
 using Artexitus.IdentityMicroservice.Domain.Entities;
 using MediatR;
@@ -41,14 +40,14 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
 
             if (tryFindByEmail != null)
             {
-                throw new ResourceDoesNotExistException($"User with email {request.Email} is already present. Unable to register");
+                throw new AlreadyExistsException($"User with email {request.Email} is already present. Unable to register");
             }
 
             var tryFindByUsername = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken);
 
             if (tryFindByUsername != null)
             {
-                throw new ResourceDoesNotExistException($"User with username {request.Username} is already present. Unable to register");
+                throw new AlreadyExistsException($"User with username {request.Username} is already present. Unable to register");
             }
 
             var defaultRole = await _userRoleRepository.GetDefaultRoleAsync(cancellationToken);
@@ -64,11 +63,11 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
                 Email = request.Email,
                 Profile = newProfile,
                 PasswordHash = _passwordHashingService.HashPassword(request.Password),
-                IsActivated = false
+                IsActivated = true,
             };
 
             newUser.RefreshToken = _tokenService.GenerateRefreshToken(newUser);
-            newUser.ActivationToken = _tokenService.GenerateActivationToken(newUser);
+            //newUser.ActivationToken = _tokenService.GenerateActivationToken(newUser);
 
             await _userProfileRepository.AddAsync(newProfile, cancellationToken);
             await _userRepository.AddAsync(newUser, cancellationToken);
