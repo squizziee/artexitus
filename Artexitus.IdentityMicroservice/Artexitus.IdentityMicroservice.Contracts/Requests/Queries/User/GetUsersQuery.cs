@@ -1,7 +1,7 @@
 ﻿using Artexitus.IdentityMicroservice.Contracts.DTO;
 using MediatR;
 
-namespace Artexitus.IdentityMicroservice.Contracts.Requests.Queries
+namespace Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User
 {
     public record GetUsersQuery : IRequest<PaginatedResponse<UserDTO>>
     {

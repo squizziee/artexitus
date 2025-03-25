@@ -1,12 +1,12 @@
 ﻿using Artexitus.IdentityMicroservice.Application.ConfigurationSections;
 using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Contracts.DTO;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Queries;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Options;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, PaginatedResponse<UserDTO>>
     {
@@ -14,7 +14,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
         private readonly IMapper _mapper;
         private readonly PaginationSettings _paginationSettings;
 
-        public GetUsersHandler(IUserRepository userRepository, 
+        public GetUsersHandler(IUserRepository userRepository,
             IMapper mapper, IOptions<PaginationSettings> options)
         {
             _userRepository = userRepository;

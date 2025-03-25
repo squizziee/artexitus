@@ -1,4 +1,4 @@
-﻿using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
+﻿using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using FluentValidation;
 
 namespace Artexitus.IdentityMicroservice.API.Validation

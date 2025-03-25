@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Artexitus.IdentityMicroservice.Contracts.Exceptions;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Artexitus.IdentityMicroservice.API.Middleware
 {
@@ -8,26 +9,26 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
         {
             if (!context.HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
             {
-                throw new Exception("??");
+                throw new InvalidCredentialsException("Access token is not present in request cookies");
             }
 
             context.ActionArguments.TryGetValue("request", out var argument);
 
             if (argument == null)
             {
-                throw new Exception("??");
+                throw new InvalidCredentialsException("Access token is not present in request cookies");
             }
 
             var property = argument.GetType().GetProperty("RefreshToken");
 
             if (property == null)
             {
-                throw new Exception("??");
+                throw new InvalidCredentialsException("Access token is not present in request cookies");
             }
 
             if (property.PropertyType != typeof(string))
             {
-                throw new Exception("??");
+                throw new InvalidCredentialsException("Access token is not present in request cookies");
             }
 
             property.SetValue(argument, refreshToken);

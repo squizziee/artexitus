@@ -2,10 +2,10 @@
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Helpers;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using MediatR;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
     public class LoginUserHandler : IRequestHandler<LoginUserCommand, UserTokens>
     {
@@ -13,7 +13,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
         private readonly ITokenService _tokenService;
         private readonly IPasswordHashingService _passwordHashingService;
 
-        public LoginUserHandler(IUserRepository userRepository, 
+        public LoginUserHandler(IUserRepository userRepository,
             ITokenService tokenService,
             IPasswordHashingService passwordHashingService)
         {
@@ -44,6 +44,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
 
             tryFind.RefreshToken = tokens.RefreshToken;
 
+            await _userRepository.UpdateAsync(tryFind, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
             return tokens;

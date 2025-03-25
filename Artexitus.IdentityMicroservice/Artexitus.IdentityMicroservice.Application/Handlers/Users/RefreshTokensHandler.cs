@@ -2,10 +2,10 @@
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Helpers;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using MediatR;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
     public class RefreshTokensHandler : IRequestHandler<RefreshTokensCommand, UserTokens>
     {
@@ -36,6 +36,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
 
             user.RefreshToken = tokens.RefreshToken;
 
+            await _userRepository.UpdateAsync(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
             return tokens;

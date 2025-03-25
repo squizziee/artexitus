@@ -1,12 +1,12 @@
 ﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using Artexitus.IdentityMicroservice.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUserCommand>
     {
@@ -19,8 +19,8 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
 
         private readonly ILogger<RegisterUserHandler> _logger;
 
-        public RegisterUserHandler(IUserRepository userRepository, 
-            IUserProfileRepository userProfileRepository, 
+        public RegisterUserHandler(IUserRepository userRepository,
+            IUserProfileRepository userProfileRepository,
             IUserRoleRepository userRoleRepository,
             IPasswordHashingService passwordHashingService,
             ITokenService tokenService,
@@ -67,7 +67,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
             };
 
             newUser.RefreshToken = _tokenService.GenerateRefreshToken(newUser);
-            //newUser.ActivationToken = _tokenService.GenerateActivationToken(newUser);
+            newUser.ActivationToken = _tokenService.GenerateActivationToken(newUser);
 
             await _userProfileRepository.AddAsync(newProfile, cancellationToken);
             await _userRepository.AddAsync(newUser, cancellationToken);
@@ -76,7 +76,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
             // await _userProfileRepository.SaveChangesAsync(cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Registered new account with email {email} and username {username}", 
+            _logger.LogInformation("Registered new account with email {email} and username {username}",
                 newUser.Email, newProfile.Username);
         }
     }

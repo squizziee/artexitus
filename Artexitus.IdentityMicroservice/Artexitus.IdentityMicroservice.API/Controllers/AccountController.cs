@@ -1,12 +1,13 @@
 ﻿using Artexitus.IdentityMicroservice.API.Middleware;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Queries;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Artexitus.IdentityMicroservice.API.Controllers
 {
-    [Route("api/user")]
+    [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -24,26 +25,49 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
 
 
         [HttpGet]
-        //[Authorize(Policy = "AdminPolicy")]
-        public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery request)
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<IActionResult> GetUsers([FromQuery] GetUsersQuery request, 
+            CancellationToken cancellationToken)
         {
-            var result = await _sender.Send(request);
+            var result = await _sender.Send(request, cancellationToken);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{Id:guid}")]
+        [Authorize(Policy = "DefaultPolicy")]
+        public async Task<IActionResult> GetUserById([FromRoute] GetUserByIdQuery request,
+            CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request, cancellationToken);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{Username}")]
+        [Authorize(Policy = "DefaultPolicy")]
+        public async Task<IActionResult> GetUserByUsername([FromRoute] GetUserByUsernameQuery request,
+            CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(request, cancellationToken);
 
             return Ok(result);
         }
 
         [HttpPost("registration")]
-        public async Task<IActionResult> RegisterUser([FromForm] RegisterUserCommand request)
+        public async Task<IActionResult> RegisterUser([FromForm] RegisterUserCommand request,
+            CancellationToken cancellationToken)
         {
-            await _sender.Send(request);
+            await _sender.Send(request, cancellationToken);
 
             return Ok();
         }
 
         [HttpPost("authentication")]
-        public async Task<IActionResult> LoginUser([FromForm] LoginUserCommand request)
+        public async Task<IActionResult> LoginUser([FromForm] LoginUserCommand request,
+            CancellationToken cancellationToken)
         {
-            var tokens = await _sender.Send(request);
+            var tokens = await _sender.Send(request, cancellationToken);
 
             Response.Cookies.Append("accessToken", tokens.AccessToken, defaultCookieOptions);
             Response.Cookies.Append("refreshToken", tokens.RefreshToken, defaultCookieOptions);
@@ -53,9 +77,10 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
 
         [HttpPost("new-tokens")]
         [ExtractRefreshTokenFromCookie]
-        public async Task<IActionResult> RefreshTokens(RefreshTokensCommand request)
+        public async Task<IActionResult> RefreshTokens(RefreshTokensCommand request,
+            CancellationToken cancellationToken)
         {
-            var tokens = await _sender.Send(request);
+            var tokens = await _sender.Send(request, cancellationToken);
 
             Response.Cookies.Append("accessToken", tokens.AccessToken, defaultCookieOptions);
             Response.Cookies.Append("refreshToken", tokens.RefreshToken, defaultCookieOptions);
@@ -63,10 +88,52 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok();
         }
 
-        [HttpPost("activation")]
-        public async Task<IActionResult> ActivateUserAccount([FromQuery] ActivateAccountCommand request)
+        [HttpPost("me")]
+        [Authorize(Policy = "DefaultPolicy")]
+        [ExtractIdFromCookie]
+        public async Task<IActionResult> Me(GetUserByIdQuery request,
+            CancellationToken cancellationToken)
         {
-            await _sender.Send(request);
+            var user = await _sender.Send(request, cancellationToken);
+
+            return Ok(user);
+        }
+
+        [HttpPatch("activation")]
+        public async Task<IActionResult> ActivateUserAccount([FromQuery] ActivateAccountCommand request,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(request, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpPatch("deactivation")]
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<IActionResult> DeactivateAccount([FromForm] DeactivateAccountCommand request,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(request, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Authorize(Policy = "Reserved")]
+        public async Task<IActionResult> DeleteUser([FromForm] DeleteUserCommand request,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(request, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpPatch("forgot-password")]
+        [Authorize(Policy = "Reserved")]
+        public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordCommand request,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(request, cancellationToken);
 
             return Ok();
         }

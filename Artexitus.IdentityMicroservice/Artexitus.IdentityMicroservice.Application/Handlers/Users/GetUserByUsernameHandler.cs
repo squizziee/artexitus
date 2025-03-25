@@ -1,11 +1,11 @@
 ﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Contracts.DTO;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Queries;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User;
 using AutoMapper;
 using MediatR;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
     public class GetUserByUsernameHandler : IRequestHandler<GetUserByUsernameQuery, UserDTO>
     {

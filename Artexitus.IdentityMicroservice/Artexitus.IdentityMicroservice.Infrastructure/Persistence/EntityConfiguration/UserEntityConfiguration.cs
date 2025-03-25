@@ -25,7 +25,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.EntityConfig
             builder
                 .HasOne(u => u.Profile)
                 .WithOne(p => p.User)
-                .HasForeignKey("User");
+                .HasForeignKey("User", "ProfileId");
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Artexitus.IdentityMicroservice.Contracts.Exceptions;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
 

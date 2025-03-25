@@ -1,10 +1,10 @@
 ﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
-using Artexitus.IdentityMicroservice.Contracts.Requests.Commands;
+using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
     public class ActivateAccountHandler : IRequestHandler<ActivateAccountCommand>
     {
@@ -31,6 +31,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers
             tryFind.ActivationToken = null;
             tryFind.IsActivated = true;
 
+            await _userRepository.UpdateAsync(tryFind, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
             _logger.LogInformation("Account with email {email} was successfully activated", tryFind.Email);
