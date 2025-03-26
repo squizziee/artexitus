@@ -48,7 +48,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
 
         public async Task<UserRole> GetDefaultRoleAsync(CancellationToken cancellationToken)
         {
-            return await _context.UserRoles.SingleAsync(r => r.Name == "Basic", cancellationToken);
+            return await _context.UserRoles
+                .AsNoTracking()
+                .SingleAsync(r => r.Name == "Basic", cancellationToken);
         }
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken)

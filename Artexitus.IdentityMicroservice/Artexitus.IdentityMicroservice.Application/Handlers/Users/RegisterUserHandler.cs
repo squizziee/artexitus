@@ -3,6 +3,7 @@ using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using Artexitus.IdentityMicroservice.Domain.Entities;
+using Hangfire;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -16,6 +17,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
         private readonly IPasswordHashingService _passwordHashingService;
         private readonly ITokenService _tokenService;
+        private readonly IEmailService _emailService;
 
         private readonly ILogger<RegisterUserHandler> _logger;
 
@@ -24,6 +26,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             IUserRoleRepository userRoleRepository,
             IPasswordHashingService passwordHashingService,
             ITokenService tokenService,
+            IEmailService emailService,
             ILogger<RegisterUserHandler> logger)
         {
             _userRepository = userRepository;
@@ -31,6 +34,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             _userRoleRepository = userRoleRepository;
             _passwordHashingService = passwordHashingService;
             _tokenService = tokenService;
+            _emailService = emailService;
             _logger = logger;
         }
 
@@ -55,6 +59,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             var newProfile = new UserProfile
             {
                 Username = request.Username,
+                RoleId = defaultRole.Id,
                 Role = defaultRole,
             };
 
@@ -75,6 +80,11 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             // Redunant as SaveChangesAsync saves all changes in context
             // await _userProfileRepository.SaveChangesAsync(cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
+
+            BackgroundJob.Enqueue
+            (
+                () => _emailService.SendAccountActivationEmail(newUser, cancellationToken)
+            );
 
             _logger.LogInformation("Registered new account with email {email} and username {username}",
                 newUser.Email, newProfile.Username);

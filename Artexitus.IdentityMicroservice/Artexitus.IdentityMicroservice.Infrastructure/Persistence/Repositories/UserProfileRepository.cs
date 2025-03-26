@@ -17,6 +17,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task AddAsync(UserProfile entity, CancellationToken cancellationToken)
         {
             entity.CreatedAt = DateTime.UtcNow;
+            entity.Role = null;
             await _context.UserProfiles.AddAsync(entity, cancellationToken);
         }
 
