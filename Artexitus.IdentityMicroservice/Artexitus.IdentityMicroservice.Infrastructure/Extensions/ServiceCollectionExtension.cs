@@ -46,6 +46,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Extensions
             services.AddScoped<IPasswordHashingService, PasswordHashingService>();
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddSingleton<IEmailService, EmailService>();
+			services.AddScoped<IBackgroundJobService, HangfireService>();
 
 			services.AddScoped<ICacheAccessor, RedisCacheAccessor>();
 			services.AddScoped<IUserRepository, UserRepository>();

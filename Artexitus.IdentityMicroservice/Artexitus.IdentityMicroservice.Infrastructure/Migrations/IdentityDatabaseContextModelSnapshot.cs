@@ -72,8 +72,8 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("beb64ea2-2827-4286-95be-291e71ba4e60"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 26, 1, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(691), new TimeSpan(0, 3, 0, 0, 0)),
+                            Id = new Guid("2d627231-67f3-42b4-9a0b-f1dda64df119"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 28, 2, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9547), new TimeSpan(0, 3, 0, 0, 0)),
                             Email = "admin0@artexitus.com",
                             IsActivated = true,
                             PasswordHash = "$2a$11$WnauqdqfU6OCCum52F2fUO/X9UwEZlv5Nc7zOf66MfPHHbutyqI7y",
@@ -82,8 +82,8 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ecafbe1f-5c66-46a6-93fa-f58ec056660a"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 26, 1, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(739), new TimeSpan(0, 3, 0, 0, 0)),
+                            Id = new Guid("c1a25a35-0683-42fe-ba1a-2b6b9fe05d09"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 28, 2, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9582), new TimeSpan(0, 3, 0, 0, 0)),
                             Email = "sys@artexitus.com",
                             IsActivated = true,
                             PasswordHash = "$2a$11$WnauqdqfU6OCCum52F2fUO/X9UwEZlv5Nc7zOf66MfPHHbutyqI7y",
@@ -128,16 +128,16 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
                             RoleId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Username = "sirgideon"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
                             RoleId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Username = "sys"
                         });
@@ -178,29 +178,29 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fcc47d49-27a2-4187-923f-07ae300a1367"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("5a48b26c-7564-45ff-8fd1-559ded8910f8"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Normal user",
                             Name = "Basic"
                         },
                         new
                         {
-                            Id = new Guid("e04caec9-c13c-4991-9269-b8bebf2556a3"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("3a1a3eaf-c319-49d4-9a87-0eeca943c62c"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Problem author. Has every right of the normal user and can create problems",
                             Name = "Author"
                         },
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Has right to every action possible except those that are dangerous to system integrity",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 25, 22, 3, 7, 163, DateTimeKind.Unspecified).AddTicks(475), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 34, 45, 171, DateTimeKind.Unspecified).AddTicks(9360), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Preferred not to use directly. Should be used as an authorization blocker to certain endpoints",
                             Name = "ARTSYS"
                         });

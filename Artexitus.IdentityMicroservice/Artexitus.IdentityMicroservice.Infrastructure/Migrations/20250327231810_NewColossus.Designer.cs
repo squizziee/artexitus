@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDatabaseContext))]
-    [Migration("20250322224900_AddSoftDeleteQueryFilter")]
-    partial class AddSoftDeleteQueryFilter
+    [Migration("20250327231810_NewColossus")]
+    partial class NewColossus
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ActivationToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -42,6 +45,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsActivated")
+                        .HasColumnType("bit");
+
                     b.Property<DateTimeOffset?>("LastUpdatedAt")
                         .HasColumnType("datetimeoffset");
 
@@ -52,6 +58,10 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                     b.Property<Guid>("ProfileId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -61,6 +71,28 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("172981d2-5e56-483d-ba32-969ad1bed452"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 28, 2, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(4061), new TimeSpan(0, 3, 0, 0, 0)),
+                            Email = "admin0@artexitus.com",
+                            IsActivated = true,
+                            PasswordHash = "$2a$11$WnauqdqfU6OCCum52F2fUO/X9UwEZlv5Nc7zOf66MfPHHbutyqI7y",
+                            ProfileId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            RefreshToken = "0000"
+                        },
+                        new
+                        {
+                            Id = new Guid("14ffcecf-64be-4011-8cd2-a72735af245e"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 28, 2, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(4092), new TimeSpan(0, 3, 0, 0, 0)),
+                            Email = "sys@artexitus.com",
+                            IsActivated = true,
+                            PasswordHash = "$2a$11$WnauqdqfU6OCCum52F2fUO/X9UwEZlv5Nc7zOf66MfPHHbutyqI7y",
+                            ProfileId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            RefreshToken = "0000"
+                        });
                 });
 
             modelBuilder.Entity("Artexitus.IdentityMicroservice.Domain.Entities.UserProfile", b =>
@@ -81,9 +113,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserProfile")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -91,12 +120,30 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserProfile");
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("Username")
                         .IsUnique();
 
                     b.ToTable("UserProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            RoleId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            Username = "sirgideon"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            RoleId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Username = "sys"
+                        });
                 });
 
             modelBuilder.Entity("Artexitus.IdentityMicroservice.Domain.Entities.UserRole", b =>
@@ -130,6 +177,36 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9a0bccbf-62f8-4cbc-b591-cbd67b617300"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Normal user",
+                            Name = "Basic"
+                        },
+                        new
+                        {
+                            Id = new Guid("0dedb8f4-d8c7-4c90-86fc-84022d3450f7"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Problem author. Has every right of the normal user and can create problems",
+                            Name = "Author"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Has right to every action possible except those that are dangerous to system integrity",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 27, 23, 18, 9, 837, DateTimeKind.Unspecified).AddTicks(3845), new TimeSpan(0, 0, 0, 0, 0)),
+                            Description = "Preferred not to use directly. Should be used as an authorization blocker to certain endpoints",
+                            Name = "ARTSYS"
+                        });
                 });
 
             modelBuilder.Entity("Artexitus.IdentityMicroservice.Domain.Entities.User", b =>
@@ -147,7 +224,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                 {
                     b.HasOne("Artexitus.IdentityMicroservice.Domain.Entities.UserRole", "Role")
                         .WithMany("UserProfiles")
-                        .HasForeignKey("UserProfile")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

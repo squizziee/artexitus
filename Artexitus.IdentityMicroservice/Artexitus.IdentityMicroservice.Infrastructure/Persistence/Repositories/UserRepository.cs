@@ -46,22 +46,27 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByActivationTokenAsync(string activationToken, CancellationToken cancellationToken)
         {
             return await _context.Users
+                .IgnoreQueryFilters()
+                .AsNoTracking()
                 .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
+                    .ThenInclude(p => p.Role)
+                    .IgnoreQueryFilters()
                 .SingleOrDefaultAsync(u => u.ActivationToken == activationToken, cancellationToken);
         }
 
         public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return await _context.Users
+                .AsNoTracking()
                 .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
+                    .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
         }
 
         public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Users
+                .AsNoTracking()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
@@ -70,16 +75,18 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
         {
             return await _context.Users
+                .AsNoTracking()
                 .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
+                    .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken, cancellationToken);
         }
 
         public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
         {
             return await _context.Users
+                .AsNoTracking()
                 .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
+                    .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Profile.Username == username, cancellationToken);
         }
 
@@ -96,8 +103,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
             }
 
             var chunk = _context.Users
+                .AsNoTracking()
                 .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
+                    .ThenInclude(p => p.Role)
                 .Skip(pageNumber * pageSize)
                 .Take(pageSize)
                 .AsEnumerable();
@@ -124,27 +132,57 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<IEnumerable<User>> SearchAsync(ISpecification<User> specification)
+        public Task<IEnumerable<User>> SearchAsync(ISpecification<User> specification, 
+            bool ignoreFilters = false)
         {
-            var result = _context.Users
-                .Include(u => u.Profile)
+            IEnumerable<User> result;
+
+            if (ignoreFilters)
+            {
+                result = _context.Users
+                    .IgnoreQueryFilters()
+                    .Include(u => u.Profile)
                         .ThenInclude(p => p.Role)
-                .Where(u => specification.IsSatisfiedBy(u))
-                .AsEnumerable();
+                    .Where(u => specification.IsSatisfiedBy(u))
+                    .AsEnumerable();
+            } else
+            {
+                result = _context.Users
+                    .Include(u => u.Profile)
+                        .ThenInclude(p => p.Role)
+                    .Where(u => specification.IsSatisfiedBy(u))
+                    .AsEnumerable();
+            }
 
             return Task.FromResult(result);
         }
 
-        public Task<IPaginatedEnumerable<User>> SearchPaginatedAsync(
-            ISpecification<User> specification, int pageNumber, int pageSize)
+        public Task<IPaginatedEnumerable<User>> SearchPaginatedAsync(ISpecification<User> specification, 
+            int pageNumber, int pageSize, bool ignoreFilters = false)
         {
-            var chunk = _context.Users
-                .Include(u => u.Profile)
+            IEnumerable<User> chunk;
+
+            if (ignoreFilters)
+            {
+                chunk = _context.Users
+                    .IgnoreQueryFilters()
+                    .Include(u => u.Profile)
                         .ThenInclude(p => p.Role)
-                .Where(u => specification.IsSatisfiedBy(u))
-                .Skip(pageNumber * pageSize)
-                .Take(pageSize)
-                .AsEnumerable();
+                    .Where(u => specification.IsSatisfiedBy(u))
+                    .Skip(pageNumber * pageSize)
+                    .Take(pageSize)
+                    .AsEnumerable();
+            }
+            else
+            {
+                chunk = _context.Users
+                    .Include(u => u.Profile)
+                        .ThenInclude(p => p.Role)
+                    .Where(u => specification.IsSatisfiedBy(u))
+                    .Skip(pageNumber * pageSize)
+                    .Take(pageSize)
+                    .AsEnumerable();
+            }
 
             var totalPages = _context.Users.Count() / pageSize;
 
@@ -179,6 +217,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task UpdateAsync(User entity, CancellationToken cancellationToken)
         {
             var user = await _context.Users
+                .IgnoreQueryFilters()
                 .SingleOrDefaultAsync(u => u.Id == entity.Id, cancellationToken);
 
             if (user == null)
@@ -189,6 +228,10 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
             user.Email = entity.Email;
             user.PasswordHash = entity.PasswordHash;
             user.LastUpdatedAt = DateTime.UtcNow;
+            user.RefreshToken = entity.RefreshToken;
+            user.ActivationToken = entity.ActivationToken;
+            user.IsActivated = entity.IsActivated;
+            user.ProfileId = entity.ProfileId;
         }
     }
 }

@@ -56,6 +56,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
             var profile = new UserProfile
             {
+                Id = Guid.NewGuid(),
                 Username = request.Username,
                 RoleId = defaultRole.Id,
                 Role = defaultRole,
@@ -63,6 +64,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
             var user = new User
             {
+                Id = Guid.NewGuid(),
                 Email = request.Email,
                 Profile = profile,
                 PasswordHash = _passwordHashingService.HashPassword(request.Password),

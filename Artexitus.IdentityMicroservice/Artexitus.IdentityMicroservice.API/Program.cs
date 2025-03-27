@@ -3,6 +3,7 @@ using Artexitus.IdentityMicroservice.API.Middleware;
 using Artexitus.IdentityMicroservice.Application.Extensions;
 using Artexitus.IdentityMicroservice.Infrastructure.Extensions;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
+using Hangfire;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -25,11 +26,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructureConfigSections(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddAuth(builder.Configuration);
 
 builder.Services.AddBackgroundJobs(builder.Configuration);
+
+builder.Services.AddApplication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -50,6 +52,8 @@ app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/hf-dash");
 
 app.MapControllers();
 
