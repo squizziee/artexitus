@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FluentValidation;
 using System.Reflection;
-using Artexitus.IdentityMicroservice.API.Middleware;
+using Artexitus.IdentityMicroservice.API.Filters;
 
 namespace Artexitus.IdentityMicroservice.API.Extensions
 {
@@ -32,8 +32,12 @@ namespace Artexitus.IdentityMicroservice.API.Extensions
                             OnMessageReceived = context =>
                             {
                                 context.Request.Cookies.TryGetValue("accessToken", out var accessToken);
+
                                 if (!string.IsNullOrEmpty(accessToken))
+                                {
                                     context.Token = accessToken;
+                                }
+
                                 return Task.CompletedTask;
                             }
                         };
@@ -46,18 +50,17 @@ namespace Artexitus.IdentityMicroservice.API.Extensions
                 .AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin", "ARTSYS"))
                 .AddPolicy("Reserved", policy => policy.RequireRole("ARTSYS"));
 
-
             return services;
         }
 
         public static IServiceCollection AddAutomatedRequestValidation(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddScoped<ValidateFilter>();
+            services.AddScoped<AutomatedValidattionFilter>();
             services.AddControllers(
                 options =>
                 {
-                    options.Filters.Add<ValidateFilter>();
+                    options.Filters.Add<AutomatedValidattionFilter>();
                 }
             );
 

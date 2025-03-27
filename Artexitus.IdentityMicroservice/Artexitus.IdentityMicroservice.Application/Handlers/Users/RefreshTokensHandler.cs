@@ -4,6 +4,7 @@ using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Helpers;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 {
@@ -11,12 +12,15 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
+        private readonly ILogger<RefreshTokensHandler> _logger;
 
         public RefreshTokensHandler(IUserRepository userRepository,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            ILogger<RefreshTokensHandler> logger)
         {
             _userRepository = userRepository;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         public async Task<UserTokens> Handle(RefreshTokensCommand request, CancellationToken cancellationToken)
@@ -38,6 +42,8 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
             await _userRepository.UpdateAsync(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("User account token refresh: {email}", user.Email);
 
             return tokens;
         }

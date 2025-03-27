@@ -17,6 +17,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             _userRepository = userRepository;
             _logger = logger;
         }
+
         public async Task Handle(ActivateAccountCommand request, CancellationToken cancellationToken)
         {
             var tryFind = await _userRepository
@@ -34,7 +35,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             await _userRepository.UpdateAsync(tryFind, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Account with email {email} was successfully activated", tryFind.Email);
+            _logger.LogInformation("Account {email} was successfully activated", tryFind.Email);
         }
     }
 }

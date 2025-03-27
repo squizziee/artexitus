@@ -8,10 +8,13 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
     public class GlobalExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<GlobalExceptionHandlingMiddleware> _logger;
 
-        public GlobalExceptionHandlingMiddleware(RequestDelegate next)
+        public GlobalExceptionHandlingMiddleware(RequestDelegate next, 
+            ILogger<GlobalExceptionHandlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -34,6 +37,14 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
                         status = StatusCodes.Status404NotFound;
                         break;
 
+                    case AlreadyExistsException:
+                        status = StatusCodes.Status409Conflict;
+                        break;
+
+                    case InvalidCredentialsException:
+                        status = StatusCodes.Status401Unauthorized;
+                        break;
+
                     case UnacceptableCommandException:
                         status = StatusCodes.Status405MethodNotAllowed;
                         break;
@@ -46,6 +57,8 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
                         status = StatusCodes.Status409Conflict;
                         break;
                 }
+
+                _logger.LogError("{ex}", exception.Message);
 
                 var problemDetails = new ProblemDetails
                 {

@@ -1,4 +1,5 @@
-﻿using Artexitus.IdentityMicroservice.API.Middleware;
+﻿using Artexitus.IdentityMicroservice.API.Attributes;
+using Artexitus.IdentityMicroservice.API.Middleware;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User;
 using MediatR;
@@ -16,13 +17,19 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
         {
             SameSite = SameSiteMode.Lax,
             HttpOnly = true,
-            Secure = true
+            Secure = true,
+        };
+        private static readonly CookieOptions logoutCookieOptions = new()
+        {
+            SameSite = SameSiteMode.Lax,
+            HttpOnly = true,
+            Secure = true,
+            MaxAge = TimeSpan.FromSeconds(0)
         };
 
         public AccountController(ISender sender) {
             _sender = sender;
         }
-
 
         [HttpGet]
         [Authorize(Policy = "AdminPolicy")]
@@ -64,7 +71,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
         }
 
         [HttpPost("authentication")]
-        public async Task<IActionResult> LoginUser([FromForm] LoginUserCommand request,
+        public async Task<IActionResult> Login([FromForm] LoginUserCommand request,
             CancellationToken cancellationToken)
         {
             var tokens = await _sender.Send(request, cancellationToken);
@@ -75,7 +82,22 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok();
         }
 
+        [HttpPost("log-out")]
+        [Authorize(Policy = "DefaultPolicy")]
+        [ExtractIdFromCookie]
+        public async Task<IActionResult> Logout(LogoutUserCommand request,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(request, cancellationToken);
+
+            Response.Cookies.Append("accessToken", string.Empty, logoutCookieOptions);
+            Response.Cookies.Append("refreshToken", string.Empty, logoutCookieOptions);
+
+            return Ok();
+        }
+
         [HttpPost("new-tokens")]
+        [AuthorizeWithRefreshToken]
         [ExtractRefreshTokenFromCookie]
         public async Task<IActionResult> RefreshTokens(RefreshTokensCommand request,
             CancellationToken cancellationToken)
@@ -129,11 +151,22 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
         }
 
         [HttpPatch("forgot-password")]
-        [Authorize(Policy = "Reserved")]
-        public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordCommand request,
+        public async Task<IActionResult> RequestPasswordChange([FromForm] RequestPasswordChangeCommand request,
             CancellationToken cancellationToken)
         {
             await _sender.Send(request, cancellationToken);
+
+            return Ok();
+        }
+
+        [HttpPatch("password-reset")]
+        public async Task<IActionResult> ChabgePassword([FromForm] ChangePasswordCommand request,
+            CancellationToken cancellationToken)
+        {
+            await _sender.Send(request, cancellationToken);
+
+            Response.Cookies.Append("accessToken", string.Empty, logoutCookieOptions);
+            Response.Cookies.Append("refreshToken", string.Empty, logoutCookieOptions);
 
             return Ok();
         }

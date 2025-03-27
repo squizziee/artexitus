@@ -11,6 +11,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
     public class RoleController : ControllerBase
     {
         private readonly ISender _sender;
+
         public RoleController(ISender sender)
         {
             _sender = sender;

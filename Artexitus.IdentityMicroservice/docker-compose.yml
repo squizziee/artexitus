@@ -4,9 +4,6 @@ services:
     build:
       context: ..
       dockerfile: Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Dockerfile
-    ports:
-       - "5000:5000"
-       - "5001:5000"
     depends_on:
        - identity_microservice_database
        - hangfire_database
@@ -15,27 +12,35 @@ services:
       image: mcr.microsoft.com/mssql/server:2022-latest
       container_name: identity_microservice_database
       environment:
-          SA_PASSWORD: "Strong@Password227"
-          ACCEPT_EULA: "Y"
-          MSSQL_DATABASE: "Default"
+        SA_PASSWORD: "Strong@Password227"
+        ACCEPT_EULA: "Y"
+        MSSQL_DATABASE: "Default"
       ports:
-          - "1433:1433"
+        - "1433:1433"
       restart: always
       volumes:
-          - identity_microservice_volume:/var/opt/mssql
+        - identity_microservice_volume:/var/opt/mssql
 
   hangfire_database:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        container_name: hangfire_database
-        environment:
-            SA_PASSWORD: "Strong@Password227"
-            ACCEPT_EULA: "Y"
-            MSSQL_DATABASE: "HangfireDefault"
-        ports:
-            - "9998:1433"
-        restart: always
-        volumes:
-            - hangfire_volume:/var/opt/mssql
+      image: mcr.microsoft.com/mssql/server:2022-latest
+      container_name: hangfire_database
+      environment:
+        SA_PASSWORD: "Strong@Password227"
+        ACCEPT_EULA: "Y"
+        MSSQL_DATABASE: "HangfireDefault"
+      ports:
+        - "9998:1433"
+      restart: always
+      volumes:
+        - hangfire_volume:/var/opt/mssql
+
+  redis_cache:
+    image: redis:latest
+    restart: always
+    ports:
+        - "6379:6379"
+    volumes:
+        - redis_volume:/data
     
 
 #   problem_microservice_database:
@@ -65,5 +70,6 @@ services:
 volumes:
     identity_microservice_volume:
     hangfire_volume:
+    redis_volume:
     #problem_microservice_volume:
     #execution_microservice_volume:

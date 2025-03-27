@@ -2,16 +2,20 @@
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Roles;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
 {
     public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand>
     {
         private readonly IUserRoleRepository _userRoleRepository;
+        private readonly ILogger<UpdateRoleHandler> _logger;
 
-        public UpdateRoleHandler(IUserRoleRepository userRoleRepository)
+        public UpdateRoleHandler(IUserRoleRepository userRoleRepository,
+            ILogger<UpdateRoleHandler> logger)
         {
             _userRoleRepository = userRoleRepository;
+            _logger = logger;
         }
 
         public async Task Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
@@ -27,6 +31,9 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
             role.Description = request.Description;
 
             await _userRoleRepository.UpdateAsync(role, cancellationToken);
+            await _userRoleRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Role updated: guid {guid}", role.Id);
         }
     }
 }

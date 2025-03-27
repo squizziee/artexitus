@@ -2,16 +2,20 @@
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Roles;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
 {
     public class DeleteRoleHandler : IRequestHandler<DeleteRoleCommand>
     {
         private readonly IUserRoleRepository _userRoleRepository;
+        private readonly ILogger<DeleteRoleHandler> _logger;
 
-        public DeleteRoleHandler(IUserRoleRepository userRoleRepository)
+        public DeleteRoleHandler(IUserRoleRepository userRoleRepository,
+            ILogger<DeleteRoleHandler> logger)
         {
             _userRoleRepository = userRoleRepository;
+            _logger = logger;
         }
 
         public async Task Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
@@ -24,6 +28,9 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
             }
 
             await _userRoleRepository.DeleteAsync(role, cancellationToken);
+            await _userRoleRepository.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Role deleted: {name}", role.Name);
         }
     }
 }

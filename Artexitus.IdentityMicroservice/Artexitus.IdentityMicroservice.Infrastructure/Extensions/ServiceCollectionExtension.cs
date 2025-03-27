@@ -9,13 +9,11 @@ using Hangfire.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using Newtonsoft.Json;
 
 namespace Artexitus.IdentityMicroservice.Infrastructure.Extensions
 {
-	public static class ServiceCollectionExtension
+    public static class ServiceCollectionExtension
 	{
 		public static IServiceCollection AddInfrastructureConfigSections(this IServiceCollection services, IConfiguration configuration)
 		{
@@ -35,14 +33,21 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Extensions
 					options.UseSqlServer(
 						configuration.GetConnectionString("IdentityMicroserviceDatabaseConnectionString")
 					);
-                    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
                 }
 			);
 
-			services.AddScoped<IPasswordHashingService, PasswordHashingService>();
+			services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("RedisConnectionString");
+                options.InstanceName = "Identity_";
+            });
+
+
+            services.AddScoped<IPasswordHashingService, PasswordHashingService>();
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddSingleton<IEmailService, EmailService>();
 
+			services.AddScoped<ICacheAccessor, RedisCacheAccessor>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 			services.AddScoped<IUserRoleRepository, UserRoleRepository>();

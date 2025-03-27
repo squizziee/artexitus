@@ -14,11 +14,9 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
         private readonly IUserRepository _userRepository;
         private readonly IUserProfileRepository _userProfileRepository;
         private readonly IUserRoleRepository _userRoleRepository;
-
         private readonly IPasswordHashingService _passwordHashingService;
         private readonly ITokenService _tokenService;
         private readonly IEmailService _emailService;
-
         private readonly ILogger<RegisterUserHandler> _logger;
 
         public RegisterUserHandler(IUserRepository userRepository,
@@ -56,38 +54,37 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
             var defaultRole = await _userRoleRepository.GetDefaultRoleAsync(cancellationToken);
 
-            var newProfile = new UserProfile
+            var profile = new UserProfile
             {
                 Username = request.Username,
                 RoleId = defaultRole.Id,
                 Role = defaultRole,
             };
 
-            var newUser = new User
+            var user = new User
             {
                 Email = request.Email,
-                Profile = newProfile,
+                Profile = profile,
                 PasswordHash = _passwordHashingService.HashPassword(request.Password),
-                IsActivated = true,
+                IsActivated = false,
             };
 
-            newUser.RefreshToken = _tokenService.GenerateRefreshToken(newUser);
-            newUser.ActivationToken = _tokenService.GenerateActivationToken(newUser);
+            user.RefreshToken = _tokenService.GenerateRefreshToken(user);
+            user.ActivationToken = _tokenService.GenerateActivationToken(user);
 
-            await _userProfileRepository.AddAsync(newProfile, cancellationToken);
-            await _userRepository.AddAsync(newUser, cancellationToken);
+            await _userProfileRepository.AddAsync(profile, cancellationToken);
+            await _userRepository.AddAsync(user, cancellationToken);
 
             // Redunant as SaveChangesAsync saves all changes in context
             // await _userProfileRepository.SaveChangesAsync(cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
-            BackgroundJob.Enqueue
-            (
-                () => _emailService.SendAccountActivationEmail(newUser, cancellationToken)
+            BackgroundJob.Enqueue(
+                () => _emailService.SendAccountActivationEmail(user, cancellationToken)
             );
 
             _logger.LogInformation("Registered new account with email {email} and username {username}",
-                newUser.Email, newProfile.Username);
+                user.Email, profile.Username);
         }
     }
 }
