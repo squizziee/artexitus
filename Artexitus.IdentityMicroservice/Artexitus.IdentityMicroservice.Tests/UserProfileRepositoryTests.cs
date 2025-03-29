@@ -3,7 +3,7 @@ using Artexitus.IdentityMicroservice.Domain.Entities;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Artexitus.IdentityMicroservice.Application.Interfaces;
+using Artexitus.IdentityMicroservice.Domain.Repositories;
 
 namespace Artexitus.IdentityMicroservice.Tests
 {

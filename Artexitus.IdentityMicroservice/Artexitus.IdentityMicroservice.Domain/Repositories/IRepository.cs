@@ -1,6 +1,6 @@
 ﻿using Artexitus.IdentityMicroservice.Domain.Entities;
 
-namespace Artexitus.IdentityMicroservice.Application.Interfaces
+namespace Artexitus.IdentityMicroservice.Domain.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {

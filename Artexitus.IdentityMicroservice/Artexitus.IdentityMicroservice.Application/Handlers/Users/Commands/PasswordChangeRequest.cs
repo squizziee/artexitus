@@ -1,4 +1,4 @@
-﻿namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
+﻿namespace Artexitus.IdentityMicroservice.Application.Handlers.Users.Commands
 {
     internal record PasswordChangeRequest
     {

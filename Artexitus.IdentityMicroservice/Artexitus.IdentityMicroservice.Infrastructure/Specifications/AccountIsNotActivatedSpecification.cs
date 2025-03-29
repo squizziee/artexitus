@@ -1,4 +1,4 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

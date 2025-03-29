@@ -1,4 +1,4 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Infrastructure.ConfigurationSections;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence;

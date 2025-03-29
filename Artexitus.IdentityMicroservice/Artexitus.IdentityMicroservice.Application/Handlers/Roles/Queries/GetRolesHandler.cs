@@ -1,10 +1,10 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Contracts.DTO;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.Roles;
 using AutoMapper;
 using MediatR;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Role
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles.Queries
 {
     public class GetRolesHandler : IRequestHandler<GetRolesQuery, IEnumerable<RoleDTO>>
     {

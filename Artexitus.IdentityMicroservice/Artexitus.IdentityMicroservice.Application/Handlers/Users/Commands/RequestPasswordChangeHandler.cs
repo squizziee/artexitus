@@ -1,28 +1,33 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using Hangfire;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Artexitus.IdentityMicroservice.Application.ConfigurationSections;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users.Commands
 {
     public class RequestPasswordChangeHandler : IRequestHandler<RequestPasswordChangeCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly ICacheAccessor _cacheAccessor;
         private readonly IEmailService _emailService;
+        private readonly PasswordResetSettings _passwordResetSettings;
         private readonly ILogger<RequestPasswordChangeHandler> _logger;
 
-        public RequestPasswordChangeHandler(IUserRepository userRepository, 
+        public RequestPasswordChangeHandler(IUserRepository userRepository,
             ICacheAccessor cacheAccessor,
             IEmailService emailService,
+            IOptions<PasswordResetSettings> options,
             ILogger<RequestPasswordChangeHandler> logger)
         {
             _userRepository = userRepository;
             _cacheAccessor = cacheAccessor;
             _emailService = emailService;
+            _passwordResetSettings = options.Value;
             _logger = logger;
         }
 
@@ -38,12 +43,12 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             var resetId = GenerateId();
 
             _cacheAccessor.Set(
-                $"pw_reset_{resetId}", 
+                $"pw_reset_{resetId}",
                 new PasswordChangeRequest
                 {
                     UserId = user.Id
-                }, 
-                TimeSpan.FromMinutes(15)
+                },
+                TimeSpan.FromMinutes(_passwordResetSettings.MinutesToResetPassword)
             );
 
             BackgroundJob.Enqueue(
@@ -55,7 +60,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
         private static string GenerateId()
         {
-            return Guid.NewGuid().ToString().Replace('-', '0');   
+            return Guid.NewGuid().ToString().Replace('-', '0');
         }
     }
 }

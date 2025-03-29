@@ -1,4 +1,4 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using System.Linq.Expressions;
 
 namespace Artexitus.IdentityMicroservice.Infrastructure.Specifications

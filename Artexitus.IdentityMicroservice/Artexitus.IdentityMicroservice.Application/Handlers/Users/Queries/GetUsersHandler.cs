@@ -1,12 +1,12 @@
 ﻿using Artexitus.IdentityMicroservice.Application.ConfigurationSections;
-using Artexitus.IdentityMicroservice.Application.Interfaces;
+using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Contracts.DTO;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Options;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users.Queries
 {
     public class GetUsersHandler : IRequestHandler<GetUsersQuery, PaginatedResponse<UserDTO>>
     {

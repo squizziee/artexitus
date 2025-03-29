@@ -1,4 +1,4 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
@@ -7,7 +7,7 @@ using Hangfire;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users.Commands
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUserCommand>
     {
@@ -71,7 +71,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             };
 
             user.RefreshToken = _tokenService.GenerateRefreshToken(user);
-            (user.ActivationToken, user.ActivationTokenValidTo) = 
+            (user.ActivationToken, user.ActivationTokenValidTo) =
                 _tokenService.GenerateActivationToken(user);
 
             await _userProfileRepository.AddAsync(profile, cancellationToken);

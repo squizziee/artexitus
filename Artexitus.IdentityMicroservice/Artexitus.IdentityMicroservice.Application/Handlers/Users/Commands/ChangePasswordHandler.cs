@@ -1,11 +1,11 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Users.Commands
 {
     public class ChangePasswordHandler : IRequestHandler<ChangePasswordCommand>
     {

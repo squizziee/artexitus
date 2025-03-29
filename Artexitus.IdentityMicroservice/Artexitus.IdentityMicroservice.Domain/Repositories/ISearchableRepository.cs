@@ -1,4 +1,4 @@
-﻿namespace Artexitus.IdentityMicroservice.Application.Interfaces
+﻿namespace Artexitus.IdentityMicroservice.Domain.Repositories
 {
     public interface ISearchableRepository<TEntity> where TEntity : class
     {

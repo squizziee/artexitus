@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Artexitus.IdentityMicroservice.Application.Interfaces
+namespace Artexitus.IdentityMicroservice.Domain.Repositories
 {
     public interface ISpecification<TEntity> where TEntity : class
     {

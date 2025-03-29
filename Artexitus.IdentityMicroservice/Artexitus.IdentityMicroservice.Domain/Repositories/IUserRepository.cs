@@ -1,6 +1,7 @@
 ﻿using Artexitus.IdentityMicroservice.Domain.Entities;
+using Artexitus.IdentityMicroservice.Domain.Repositories;
 
-namespace Artexitus.IdentityMicroservice.Application.Interfaces
+namespace Artexitus.IdentityMicroservice.Domain.Repositories
 {
     public interface IUserRepository : IRepository<User>, IPaginatableRepository<User>, 
         ISearchableRepository<User>

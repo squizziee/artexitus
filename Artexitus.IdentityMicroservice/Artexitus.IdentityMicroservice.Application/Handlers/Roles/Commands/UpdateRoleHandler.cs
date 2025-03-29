@@ -1,10 +1,10 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Roles;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles.Commands
 {
     public class UpdateRoleHandler : IRequestHandler<UpdateRoleCommand>
     {

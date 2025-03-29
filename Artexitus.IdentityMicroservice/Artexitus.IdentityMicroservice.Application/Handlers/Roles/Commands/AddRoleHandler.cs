@@ -1,10 +1,10 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
+﻿using Artexitus.IdentityMicroservice.Domain.Repositories;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Roles;
 using Artexitus.IdentityMicroservice.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
+namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles.Commands
 {
     public class AddRoleHandler : IRequestHandler<AddRoleCommand>
     {
@@ -14,7 +14,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Roles
         public AddRoleHandler(IUserRoleRepository userRoleRepository,
             ILogger<AddRoleHandler> logger)
         {
-            _userRoleRepository = userRoleRepository;   
+            _userRoleRepository = userRoleRepository;
             _logger = logger;
         }
 
