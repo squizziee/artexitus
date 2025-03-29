@@ -1,5 +1,4 @@
 ﻿using Artexitus.IdentityMicroservice.API.Attributes;
-using Artexitus.IdentityMicroservice.API.Middleware;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Queries.User;
 using MediatR;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Artexitus.IdentityMicroservice.API.Controllers
 {
-    [Route("api/account")]
+    [Route("api/accounts")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -122,6 +121,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
         }
 
         [HttpPatch("activation")]
+        [AuthorizeWithActivationToken]
         public async Task<IActionResult> ActivateUserAccount([FromQuery] ActivateAccountCommand request,
             CancellationToken cancellationToken)
         {

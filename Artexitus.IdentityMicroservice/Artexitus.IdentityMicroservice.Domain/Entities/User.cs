@@ -9,6 +9,8 @@
         public string RefreshToken { get; set; } = string.Empty;
         public string? ActivationToken { get; set; }
         public bool IsActivated { get; set; }
+        public DateTimeOffset LastRefresh { get; set; }
+        public DateTimeOffset ActivationTokenValidTo { get; set; }
 
     }
 }

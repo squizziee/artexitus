@@ -2,8 +2,8 @@
 {
     public interface ISearchableRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> SearchAsync(ISpecification<TEntity> specification, bool ignoreFilters = false);
+        Task<IEnumerable<TEntity>> SearchAsync(ISpecification<TEntity> specification);
         Task<IPaginatedEnumerable<TEntity>> SearchPaginatedAsync(
-            ISpecification<TEntity> specification, int pageNumber, int pageSize, bool ignoreFilters = false);
+            ISpecification<TEntity> specification, int pageNumber, int pageSize);
     }
 }

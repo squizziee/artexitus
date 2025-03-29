@@ -38,16 +38,16 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
         public async Task Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var tryFindByEmail = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
+            var userByEmail = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
-            if (tryFindByEmail != null)
+            if (userByEmail != null)
             {
                 throw new AlreadyExistsException($"User with email {request.Email} is already present. Unable to register");
             }
 
-            var tryFindByUsername = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken);
+            var userByUsername = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken);
 
-            if (tryFindByUsername != null)
+            if (userByUsername != null)
             {
                 throw new AlreadyExistsException($"User with username {request.Username} is already present. Unable to register");
             }
@@ -58,7 +58,6 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             {
                 Id = Guid.NewGuid(),
                 Username = request.Username,
-                RoleId = defaultRole.Id,
                 Role = defaultRole,
             };
 
@@ -72,7 +71,8 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             };
 
             user.RefreshToken = _tokenService.GenerateRefreshToken(user);
-            user.ActivationToken = _tokenService.GenerateActivationToken(user);
+            (user.ActivationToken, user.ActivationTokenValidTo) = 
+                _tokenService.GenerateActivationToken(user);
 
             await _userProfileRepository.AddAsync(profile, cancellationToken);
             await _userRepository.AddAsync(user, cancellationToken);

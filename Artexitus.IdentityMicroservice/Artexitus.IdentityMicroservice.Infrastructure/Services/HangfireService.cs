@@ -1,42 +1,44 @@
-﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
-using Artexitus.IdentityMicroservice.Application.Services;
+﻿using Artexitus.IdentityMicroservice.Application.Services;
+using Artexitus.IdentityMicroservice.Infrastructure.Extensions;
+using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Artexitus.IdentityMicroservice.Infrastructure.Specifications;
 
 namespace Artexitus.IdentityMicroservice.Infrastructure.Services
 {
     public class HangfireService : IBackgroundJobService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IdentityDatabaseContext _context;
 
-        public HangfireService(IUserRepository userRepository)
+        public HangfireService(IdentityDatabaseContext context)
         {
-            _userRepository = userRepository;
+            _context = context;
         }
 
-        public async void ClearNonActivatedAccounts()
+        public void ClearNonActivatedAccounts()
         {
-            var result = await _userRepository
-                .SearchAsync(new AccountIsNotActivatedSpecification(), true);
+            var result = _context.Users
+                .Specify(new AccountIsNotActivatedSpecification())
+                .AsEnumerable();
 
             foreach (var account in result)
             {
-                await _userRepository.DeleteAsync(account, CancellationToken.None);
+                _context.Users.Remove(account);
             }
 
-            await _userRepository.SaveChangesAsync(CancellationToken.None);
+            _context.SaveChanges();
         }
 
         public async void DeactivateStaleAccounts()
         {
-            var result = await _userRepository
-                .SearchAsync(new AccountIsStaleSpecification(358), true);
+            //var result = await _userRepository
+            //    .SearchAsync(new AccountIsStaleSpecification(365 * 5));
 
-            foreach (var account in result)
-            {
-                await _userRepository.SoftDeleteAsync(account, CancellationToken.None);
-            }
+            //foreach (var account in result)
+            //{
+            //    await _userRepository.SoftDeleteAsync(account, CancellationToken.None);
+            //}
 
-            await _userRepository.SaveChangesAsync(CancellationToken.None);
+            //await _userRepository.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

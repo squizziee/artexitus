@@ -46,6 +46,8 @@ namespace Artexitus.IdentityMicroservice.Tests
                 }
             };
 
+            _context.SaveChanges();
+
             var oldSize = _context.UserProfiles.Count();
 
             await _userProfileRepository.AddAsync(newProfile, CancellationToken.None);
@@ -223,28 +225,28 @@ namespace Artexitus.IdentityMicroservice.Tests
         {
             FlushContext();
 
+            var dummyRole = new UserRole
+            {
+                Id = Guid.NewGuid(),
+                Name = "test_role2",
+                Description = "test_description"
+            };
+
+            _context.UserRoles.Add(dummyRole);
+            _context.SaveChanges();
+
             var newProfile = new UserProfile
             {
                 Id = Guid.NewGuid(),
                 Username = "test_username",
-                Role = new()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "test_role",
-                    Description = "test_description"
-                }
+                RoleId = dummyRole.Id,
             };
 
             var updatedProfile = new UserProfile
             {
                 Id = newProfile.Id,
                 Username = "test_username2",
-                Role = new()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "test_role2",
-                    Description = "test_description"
-                }
+                RoleId = dummyRole.Id,
             };
 
             var oldSize = _context.UserProfiles.Count();

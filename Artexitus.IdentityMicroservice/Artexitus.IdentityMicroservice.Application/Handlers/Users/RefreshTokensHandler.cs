@@ -39,6 +39,7 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             };
 
             user.RefreshToken = tokens.RefreshToken;
+            user.LastRefresh = DateTimeOffset.UtcNow;
 
             await _userRepository.UpdateAsync(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);

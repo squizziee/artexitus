@@ -34,6 +34,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Extensions
 						configuration.GetConnectionString("IdentityMicroserviceDatabaseConnectionString")
 					);
                 }
+				
 			);
 
 			services.AddStackExchangeRedisCache(options =>

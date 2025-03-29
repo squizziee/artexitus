@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Artexitus.IdentityMicroservice.API.Controllers
 {
-    [Route("api/role")]
+    [Route("api/roles")]
     [ApiController]
     public class RoleController : ControllerBase
     {
@@ -18,6 +18,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> GetAllRoles([FromQuery] GetRolesQuery request,
             CancellationToken cancellationToken)
         {
@@ -27,6 +28,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
         }
 
         [HttpGet("{Id:guid}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<IActionResult> GetRoleById([FromRoute] GetRoleByIdQuery request,
             CancellationToken cancellationToken)
         {

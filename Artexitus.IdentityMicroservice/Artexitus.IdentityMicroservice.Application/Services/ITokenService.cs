@@ -6,6 +6,6 @@ namespace Artexitus.IdentityMicroservice.Application.Services
     {
         string GenerateAccessToken(User user);
         string GenerateRefreshToken(User user);
-        string GenerateActivationToken(User user);
+        (string, DateTimeOffset) GenerateActivationToken(User user);
     }
 }

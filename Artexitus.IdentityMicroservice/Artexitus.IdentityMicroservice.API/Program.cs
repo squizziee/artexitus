@@ -1,5 +1,7 @@
 using Artexitus.IdentityMicroservice.API.Extensions;
+using Artexitus.IdentityMicroservice.API.Filters;
 using Artexitus.IdentityMicroservice.API.Middleware;
+using Artexitus.IdentityMicroservice.API.Misc;
 using Artexitus.IdentityMicroservice.Application.Extensions;
 using Artexitus.IdentityMicroservice.Infrastructure.Extensions;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
@@ -20,18 +22,14 @@ builder.Configuration.AddJsonFile("credentials.json", optional: false, reloadOnC
 
 builder.Services.AddAutomatedRequestValidation();
 builder.Services.AddProblemDetails();
+builder.Services.AddInfrastructureConfigSections(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAuth(builder.Configuration);
+builder.Services.AddBackgroundJobs(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddInfrastructureConfigSections(builder.Configuration);
-builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddAuth(builder.Configuration);
-
-builder.Services.AddBackgroundJobs(builder.Configuration);
-
-builder.Services.AddApplication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -53,8 +51,13 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseHangfireDashboard("/hf-dash");
+app.UseHangfireDashboard("/hf-dash", new DashboardOptions
+{
+    Authorization = [new DashboardFilter()]
+});
 
 app.MapControllers();
+
+RecurringJobInstantiator.Init();
 
 app.Run();

@@ -87,7 +87,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence
                     {
                         Id = Guid.NewGuid(),
                         Email = "admin0@artexitus.com",
-                        CreatedAt = DateTimeOffset.Now,
+                        CreatedAt = now,
                         IsActivated = true,
                         PasswordHash = "$2a$11$WnauqdqfU6OCCum52F2fUO/X9UwEZlv5Nc7zOf66MfPHHbutyqI7y",
                         ProfileId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
@@ -97,7 +97,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence
                     {
                         Id = Guid.NewGuid(),
                         Email = "sys@artexitus.com",
-                        CreatedAt = DateTimeOffset.Now,
+                        CreatedAt = now,
                         IsActivated = true,
                         PasswordHash = "$2a$11$WnauqdqfU6OCCum52F2fUO/X9UwEZlv5Nc7zOf66MfPHHbutyqI7y",
                         ProfileId = Guid.Parse("22222222-2222-2222-2222-222222222222"),

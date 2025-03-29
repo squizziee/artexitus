@@ -3,7 +3,6 @@ using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Helpers;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
-using Artexitus.IdentityMicroservice.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -29,16 +28,30 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
         public async Task<UserTokens> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
+            var isStale = false;
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
             if (user == null)
             {
-                throw new ResourceDoesNotExistException($"User with email {request.Email} does not exist. Unable to log in");
+                // Done in case of long inactivity, so the account could be easily recovered
+                user = await _userRepository.GetByStaleEmailAsync(request.Email, cancellationToken);
+
+                if (user == null)
+                {
+                    throw new ResourceDoesNotExistException($"User with email {request.Email} does not exist. Unable to log in");
+                }
+
+                isStale = true;
             }
 
             if (!_passwordHashingService.ValidatePassword(request.Password, user.PasswordHash))
             {
                 throw new InvalidCredentialsException($"Wrong password for user with email {request.Email}. Unable to log in");
+            }
+
+            if (isStale)
+            {
+                user.DeletedAt = null;
             }
 
             var tokens = new UserTokens
@@ -48,11 +61,18 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
             };
 
             user.RefreshToken = tokens.RefreshToken;
+            user.LastRefresh = DateTimeOffset.UtcNow;
 
             await _userRepository.UpdateAsync(user, cancellationToken);
             await _userRepository.SaveChangesAsync(cancellationToken);
 
+            if (isStale)
+            {
+                _logger.LogInformation("User account recovered: {email}", user.Email);
+            }
+
             _logger.LogInformation("User account sign-in: {email}", user.Email);
+
 
             return tokens;
         }

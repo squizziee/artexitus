@@ -42,14 +42,14 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Services
                 issuer: _accessTokenSettings.Issuer,
                 audience: _accessTokenSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(_accessTokenSettings.ExpirationTimeInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(_accessTokenSettings.ExpirationTimeInMinutes),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateActivationToken(User user)
+        public (string, DateTimeOffset) GenerateActivationToken(User user)
         {
             var claims = new Claim[]
            {
@@ -60,16 +60,17 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_activationTokenSettings.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var validTo = DateTime.UtcNow.AddHours(_activationTokenSettings.ExpirationTimeInHours);
 
             var token = new JwtSecurityToken(
                 issuer: _activationTokenSettings.Issuer,
                 audience: _activationTokenSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(_activationTokenSettings.ExpirationTimeInHours),
+                expires: validTo,
                 signingCredentials: creds
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return (new JwtSecurityTokenHandler().WriteToken(token), validTo);
         }
 
         public string GenerateRefreshToken(User user)
@@ -88,7 +89,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Services
                 issuer: _refreshTokenSettings.Issuer,
                 audience: _refreshTokenSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddDays(_refreshTokenSettings.ExpirationTimeInDays),
+                expires: DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpirationTimeInDays),
                 signingCredentials: creds
             );
 

@@ -17,16 +17,6 @@ namespace Artexitus.IdentityMicroservice.Application.Extensions
                 config.RegisterServicesFromAssembly(typeof(ServiceCollectionExtension).Assembly)
             );
 
-            //RecurringJob.AddOrUpdate<IBackgroundJobService>(
-            //    "clear-non-activated-accounts", 
-            //    s => s.ClearNonActivatedAccounts(), Cron.Minutely()
-            //);
-
-            //RecurringJob.AddOrUpdate<IBackgroundJobService>(
-            //    "clear-stale-accounts",
-            //    s => s.DeactivateStaleAccounts(), Cron.Daily()
-            //);
-
             return services;
         }
     }

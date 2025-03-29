@@ -3,6 +3,7 @@ using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Domain.Entities;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories;
+using Artexitus.IdentityMicroservice.Infrastructure.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace Artexitus.IdentityMicroservice.Tests
@@ -39,6 +40,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -72,6 +74,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -90,6 +93,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -128,6 +132,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -199,6 +204,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -270,6 +276,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -288,14 +295,15 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = newUser.Id,
                 Email = "test2@email.com",
                 PasswordHash = "test_hash2",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
-                    Username = "test_username2",
+                    Username = "test_username",
                     Role = new()
                     {
                         Id = Guid.NewGuid(),
-                        Name = "test_role2",
+                        Name = "test_role",
                         Description = "test_description"
                     }
                 }
@@ -327,6 +335,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = Guid.NewGuid(),
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -389,6 +398,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                     Id = Guid.NewGuid(),
                     Email = $"test{i}@email.com",
                     PasswordHash = $"test_hash{i}",
+                    IsActivated = true,
                     Profile = new()
                     {
                         Id = Guid.NewGuid(),
@@ -424,6 +434,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = userId,
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -461,6 +472,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                 Id = userId,
                 Email = "test@email.com",
                 PasswordHash = "test_hash",
+                IsActivated = true,
                 Profile = new()
                 {
                     Id = Guid.NewGuid(),
@@ -493,6 +505,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                     Id = Guid.NewGuid(),
                     Email = $"test{i}@email.com",
                     PasswordHash = $"test_hash{i}",
+                    IsActivated = true,
                     Profile = new()
                     {
                         Id = Guid.NewGuid(),
@@ -535,6 +548,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                     Id = Guid.NewGuid(),
                     Email = $"test{i}@email.com",
                     PasswordHash = $"test_hash{i}",
+                    IsActivated = true,
                     Profile = new()
                     {
                         Id = Guid.NewGuid(),
@@ -574,6 +588,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                     Id = Guid.NewGuid(),
                     Email = $"test{i}@email.com",
                     PasswordHash = $"test_hash{i}",
+                    IsActivated = true,
                     Profile = new()
                     {
                         Id = Guid.NewGuid(),
@@ -613,6 +628,7 @@ namespace Artexitus.IdentityMicroservice.Tests
                     Id = Guid.NewGuid(),
                     Email = $"test{i}@email.com",
                     PasswordHash = $"test_hash{i}",
+                    IsActivated = true,
                     Profile = new()
                     {
                         Id = Guid.NewGuid(),
@@ -636,6 +652,45 @@ namespace Artexitus.IdentityMicroservice.Tests
             await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
                 async () => await _userRepository.GetPaginatedAsync(pageNumber, pageSize, CancellationToken.None)
             );
+        }
+
+        [Fact]
+        public async Task SearchUsers_ShouldSucceed()
+        {
+            FlushContext();
+
+            var userCount = 10;
+
+            for (int i = 0; i < userCount; i++)
+            {
+                var newUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = $"test{i}@email.com",
+                    PasswordHash = $"test_hash{i}",
+                    IsActivated = i % 2 == 0,
+                    ActivationTokenValidTo = DateTimeOffset.UtcNow,
+                    Profile = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = $"test_username{i}",
+                        Role = new()
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = $"test_role{i}",
+                            Description = $"test_description{i}"
+                        }
+                    }
+                };
+                await _userRepository.AddAsync(newUser, CancellationToken.None);
+            }
+
+            await _userRepository.SaveChangesAsync(CancellationToken.None);
+
+            var result = await _userRepository.SearchAsync(new AccountIsNotActivatedSpecification());
+
+            Assert.NotNull(result);
+            Assert.Equal(5, result.Count());
         }
     }
 }

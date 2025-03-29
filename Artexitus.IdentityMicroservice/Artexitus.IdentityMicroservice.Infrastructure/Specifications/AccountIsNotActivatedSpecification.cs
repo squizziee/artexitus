@@ -1,13 +1,16 @@
 ﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Artexitus.IdentityMicroservice.Infrastructure.Specifications
 {
-    public class AccountIsNotActivatedSpecification : ISpecification<User>
+    public class AccountIsNotActivatedSpecification : BaseSpecification<User>
     {
-        public bool IsSatisfiedBy(User entity)
+        public AccountIsNotActivatedSpecification()
         {
-            return !entity.IsActivated;
+            Criteria = (user => !user.IsActivated && user.ActivationTokenValidTo < DateTimeOffset.UtcNow);
+            IgnoreQueryFilters = true;
+            IsEvaluatedOnClientSide = true;
         }
     }
 }

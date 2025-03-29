@@ -4,6 +4,7 @@ using Artexitus.IdentityMicroservice.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
 {
     [DbContext(typeof(IdentityDatabaseContext))]
-    partial class IdentityDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250329155739_AddActivationTokenValidTo")]
+    partial class AddActivationTokenValidTo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,9 +81,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e15f59f4-5cec-4031-a77c-ed9653974d5a"),
+                            Id = new Guid("cde8357f-9186-4f68-a6fd-4089f94943b5"),
                             ActivationTokenValidTo = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "admin0@artexitus.com",
                             IsActivated = true,
                             LastRefresh = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -90,9 +93,9 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2fac5936-2b85-4274-99cc-3b39a0cf77ad"),
+                            Id = new Guid("6fa9cd2a-89e0-47e2-8ba2-4672962bbdd6"),
                             ActivationTokenValidTo = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             Email = "sys@artexitus.com",
                             IsActivated = true,
                             LastRefresh = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -138,16 +141,16 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             RoleId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Username = "sirgideon"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             RoleId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Username = "sys"
                         });
@@ -188,29 +191,29 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d99fa601-7fa5-494a-a5c4-dd74c34edf50"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("75d9396b-2ca8-4ed1-b9ad-1ab75343dd8c"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Normal user",
                             Name = "Basic"
                         },
                         new
                         {
-                            Id = new Guid("acb1753b-9681-4411-aabf-5338d2c17a3e"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            Id = new Guid("0a5e8040-e6e7-47e2-955a-47e28f4430a7"),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Problem author. Has every right of the normal user and can create problems",
                             Name = "Author"
                         },
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Has right to every action possible except those that are dangerous to system integrity",
                             Name = "Admin"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 21, 21, 6, 27, DateTimeKind.Unspecified).AddTicks(2867), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 3, 29, 15, 57, 39, 697, DateTimeKind.Unspecified).AddTicks(9390), new TimeSpan(0, 0, 0, 0, 0)),
                             Description = "Preferred not to use directly. Should be used as an authorization blocker to certain endpoints",
                             Name = "ARTSYS"
                         });

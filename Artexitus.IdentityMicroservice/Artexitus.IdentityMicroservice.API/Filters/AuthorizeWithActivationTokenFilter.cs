@@ -8,23 +8,23 @@ using System.Text;
 
 namespace Artexitus.IdentityMicroservice.API.Filters
 {
-    public class AuthorizeWithRefreshTokenFilter : IAuthorizationFilter
+    public class AuthorizeWithActivationTokenFilter : IAuthorizationFilter
     {
-        private readonly RefreshTokenSettings _refreshTokenSettings;
+        private readonly ActivationTokenSettings _activationTokenSettings;
 
-        public AuthorizeWithRefreshTokenFilter(IOptions<RefreshTokenSettings> options)
+        public AuthorizeWithActivationTokenFilter(IOptions<ActivationTokenSettings> options)
         {
-            _refreshTokenSettings = options.Value;
+            _activationTokenSettings = options.Value;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var refreshToken = context.HttpContext.Request.Cookies
-                .FirstOrDefault(c => c.Key == "refreshToken");
+            var activationToken = context.HttpContext.Request.Query
+                .FirstOrDefault(p => p.Key == "ActivationToken");
 
-            var exception = new InvalidCredentialsException("Refresh token is not present in request cookies");
+            var exception = new InvalidCredentialsException("Activation token is not present in request query");
 
-            if (refreshToken.Equals(default(KeyValuePair<string, string>)))
+            if (activationToken.Equals(default(KeyValuePair<string, string>)))
             {
                 throw exception;
             }
@@ -35,21 +35,21 @@ namespace Artexitus.IdentityMicroservice.API.Filters
                 ValidateAudience = true,
                 ValidateIssuer = true,
                 ValidateLifetime = true,
-                ValidIssuer = _refreshTokenSettings.Issuer,
-                ValidAudience = _refreshTokenSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_refreshTokenSettings.Key)),
+                ValidIssuer = _activationTokenSettings.Issuer,
+                ValidAudience = _activationTokenSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_activationTokenSettings.Key)),
             };
 
             var validator = new JwtSecurityTokenHandler();
 
-            if (!validator.CanReadToken(refreshToken.Value))
+            if (!validator.CanReadToken(activationToken.Value))
             {
                 throw exception;
             }
 
             try
             {
-                validator.ValidateToken(refreshToken.Value, validationParameters, out _);
+                validator.ValidateToken(activationToken.Value, validationParameters, out _);
             }
             catch
             {

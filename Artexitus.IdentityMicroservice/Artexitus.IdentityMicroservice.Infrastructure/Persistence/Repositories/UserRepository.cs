@@ -1,6 +1,7 @@
 ﻿using Artexitus.IdentityMicroservice.Application.Interfaces;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Domain.Entities;
+using Artexitus.IdentityMicroservice.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
@@ -16,7 +17,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
 
         public async Task AddAsync(User entity, CancellationToken cancellationToken)
         {
-            entity.CreatedAt = DateTime.UtcNow;
+            entity.CreatedAt = DateTimeOffset.UtcNow;
             await _context.Users.AddAsync(entity, cancellationToken);
         }
 
@@ -47,7 +48,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         {
             return await _context.Users
                 .IgnoreQueryFilters()
-                .AsNoTracking()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                     .IgnoreQueryFilters()
@@ -57,7 +57,15 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return await _context.Users
-                .AsNoTracking()
+                .Include(u => u.Profile)
+                    .ThenInclude(p => p.Role)
+                .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
+        }
+
+        public async Task<User?> GetByStaleEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .IgnoreQueryFilters()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
@@ -66,7 +74,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await _context.Users
-                .AsNoTracking()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
@@ -75,7 +82,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
         {
             return await _context.Users
-                .AsNoTracking()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken, cancellationToken);
@@ -84,7 +90,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
         {
             return await _context.Users
-                .AsNoTracking()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)
                 .SingleOrDefaultAsync(u => u.Profile.Username == username, cancellationToken);
@@ -132,57 +137,23 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<IEnumerable<User>> SearchAsync(ISpecification<User> specification, 
-            bool ignoreFilters = false)
+        public Task<IEnumerable<User>> SearchAsync(ISpecification<User> specification)
         {
-            IEnumerable<User> result;
-
-            if (ignoreFilters)
-            {
-                result = _context.Users
-                    .IgnoreQueryFilters()
-                    .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
-                    .Where(u => specification.IsSatisfiedBy(u))
-                    .AsEnumerable();
-            } else
-            {
-                result = _context.Users
-                    .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
-                    .Where(u => specification.IsSatisfiedBy(u))
-                    .AsEnumerable();
-            }
+            var result = _context.Users
+                .Specify(specification)
+                .AsEnumerable();
 
             return Task.FromResult(result);
         }
 
         public Task<IPaginatedEnumerable<User>> SearchPaginatedAsync(ISpecification<User> specification, 
-            int pageNumber, int pageSize, bool ignoreFilters = false)
+            int pageNumber, int pageSize)
         {
-            IEnumerable<User> chunk;
-
-            if (ignoreFilters)
-            {
-                chunk = _context.Users
-                    .IgnoreQueryFilters()
-                    .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
-                    .Where(u => specification.IsSatisfiedBy(u))
-                    .Skip(pageNumber * pageSize)
+            var chunk = _context.Users
+               .Specify(specification)
+               .Skip(pageNumber * pageSize)
                     .Take(pageSize)
-                    .AsEnumerable();
-            }
-            else
-            {
-                chunk = _context.Users
-                    .Include(u => u.Profile)
-                        .ThenInclude(p => p.Role)
-                    .Where(u => specification.IsSatisfiedBy(u))
-                    .Skip(pageNumber * pageSize)
-                    .Take(pageSize)
-                    .AsEnumerable();
-            }
+               .AsEnumerable();
 
             var totalPages = _context.Users.Count() / pageSize;
 
@@ -211,7 +182,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
                 throw new ResourceDoesNotExistException($"User entity with ID {entity.Id} does not exist. Unable to soft delete");
             }
 
-            user.DeletedAt = DateTime.UtcNow;
+            user.DeletedAt = DateTimeOffset.UtcNow;
         }
 
         public async Task UpdateAsync(User entity, CancellationToken cancellationToken)
@@ -227,11 +198,12 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
 
             user.Email = entity.Email;
             user.PasswordHash = entity.PasswordHash;
-            user.LastUpdatedAt = DateTime.UtcNow;
+            user.LastUpdatedAt = DateTimeOffset.UtcNow;
             user.RefreshToken = entity.RefreshToken;
             user.ActivationToken = entity.ActivationToken;
             user.IsActivated = entity.IsActivated;
-            user.ProfileId = entity.ProfileId;
+            user.LastRefresh = entity.LastRefresh;
+            user.ActivationTokenValidTo = entity.ActivationTokenValidTo;
         }
     }
 }

@@ -16,8 +16,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
 
         public async Task AddAsync(UserProfile entity, CancellationToken cancellationToken)
         {
-            entity.CreatedAt = DateTime.UtcNow;
-            entity.Role = null;
+            entity.CreatedAt = DateTimeOffset.UtcNow;
             await _context.UserProfiles.AddAsync(entity, cancellationToken);
         }
 
@@ -38,6 +37,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         {
             return Task.FromResult(
                 _context.UserProfiles
+                    .AsNoTracking()
                     .Include(p => p.Role)
                     .AsEnumerable()
             );
@@ -65,7 +65,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
                 throw new ResourceDoesNotExistException($"User profile entity with ID {entity.Id} does not exist. Unable to soft delete");
             }
 
-            profile.DeletedAt = DateTime.UtcNow;
+            profile.DeletedAt = DateTimeOffset.UtcNow;
         }
 
         public async Task UpdateAsync(UserProfile entity, CancellationToken cancellationToken)
@@ -80,7 +80,7 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
 
             profile.RoleId = entity.RoleId;
             profile.Username = entity.Username;
-            profile.LastUpdatedAt = DateTime.UtcNow;
+            profile.LastUpdatedAt = DateTimeOffset.UtcNow;
         }
     }
 }

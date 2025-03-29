@@ -2,7 +2,6 @@
 using Artexitus.IdentityMicroservice.Application.Services;
 using Artexitus.IdentityMicroservice.Contracts.Exceptions;
 using Artexitus.IdentityMicroservice.Contracts.Requests.Commands.Users;
-using Artexitus.IdentityMicroservice.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
