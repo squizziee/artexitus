@@ -47,7 +47,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("{Id:guid}")]
         [Authorize(Policy = "Reserved")]
         public async Task<IActionResult> UpdateRole([FromForm] UpdateRoleCommand request,
             CancellationToken cancellationToken)
@@ -57,9 +57,9 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{Id:guid}")]
         [Authorize(Policy = "Reserved")]
-        public async Task<IActionResult> DeleteRole([FromForm] DeleteRoleCommand request,
+        public async Task<IActionResult> DeleteRole([FromRoute] DeleteRoleCommand request,
             CancellationToken cancellationToken)
         {
             await _sender.Send(request, cancellationToken);

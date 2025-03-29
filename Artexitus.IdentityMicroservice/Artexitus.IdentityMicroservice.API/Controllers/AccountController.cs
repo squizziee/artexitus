@@ -120,7 +120,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok(user);
         }
 
-        [HttpPatch("activation")]
+        [HttpGet("activation")]
         [AuthorizeWithActivationToken]
         public async Task<IActionResult> ActivateUserAccount([FromQuery] ActivateAccountCommand request,
             CancellationToken cancellationToken)
@@ -130,9 +130,9 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok();
         }
 
-        [HttpPatch("deactivation")]
+        [HttpPatch("deactivation/{Id}")]
         [Authorize(Policy = "AdminPolicy")]
-        public async Task<IActionResult> DeactivateAccount([FromForm] DeactivateAccountCommand request,
+        public async Task<IActionResult> DeactivateAccount([FromRoute] DeactivateAccountCommand request,
             CancellationToken cancellationToken)
         {
             await _sender.Send(request, cancellationToken);
@@ -150,7 +150,7 @@ namespace Artexitus.IdentityMicroservice.API.Controllers
             return Ok();
         }
 
-        [HttpPatch("forgot-password")]
+        [HttpPost("forgot-password")]
         public async Task<IActionResult> RequestPasswordChange([FromForm] RequestPasswordChangeCommand request,
             CancellationToken cancellationToken)
         {
