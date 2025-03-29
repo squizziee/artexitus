@@ -53,16 +53,9 @@ namespace Artexitus.IdentityMicroservice.API.Extensions
             return services;
         }
 
-        public static IServiceCollection AddAutomatedRequestValidation(this IServiceCollection services)
+        public static IServiceCollection AddValidators(this IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddScoped<AutomatedValidattionFilter>();
-            services.AddControllers(
-                options =>
-                {
-                    options.Filters.Add<AutomatedValidattionFilter>();
-                }
-            );
 
             return services;
         }

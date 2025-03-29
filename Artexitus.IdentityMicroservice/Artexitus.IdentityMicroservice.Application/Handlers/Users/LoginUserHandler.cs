@@ -28,26 +28,20 @@ namespace Artexitus.IdentityMicroservice.Application.Handlers.Users
 
         public async Task<UserTokens> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var isStale = false;
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
             if (user == null)
             {
-                // Done in case of long inactivity, so the account could be easily recovered
-                user = await _userRepository.GetByStaleEmailAsync(request.Email, cancellationToken);
-
-                if (user == null)
-                {
-                    throw new ResourceDoesNotExistException($"User with email {request.Email} does not exist. Unable to log in");
-                }
-
-                isStale = true;
+                throw new ResourceDoesNotExistException($"User with email {request.Email} does not exist. Unable to log in");
             }
 
             if (!_passwordHashingService.ValidatePassword(request.Password, user.PasswordHash))
             {
                 throw new InvalidCredentialsException($"Wrong password for user with email {request.Email}. Unable to log in");
             }
+
+            // Done in case of long inactivity, so the account could be easily recovered
+            var isStale = user.DeletedAt != null;
 
             if (isStale)
             {

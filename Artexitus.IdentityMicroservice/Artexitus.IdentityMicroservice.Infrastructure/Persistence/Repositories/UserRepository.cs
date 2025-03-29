@@ -57,14 +57,6 @@ namespace Artexitus.IdentityMicroservice.Infrastructure.Persistence.Repositories
         public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return await _context.Users
-                .Include(u => u.Profile)
-                    .ThenInclude(p => p.Role)
-                .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
-        }
-
-        public async Task<User?> GetByStaleEmailAsync(string email, CancellationToken cancellationToken)
-        {
-            return await _context.Users
                 .IgnoreQueryFilters()
                 .Include(u => u.Profile)
                     .ThenInclude(p => p.Role)

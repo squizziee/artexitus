@@ -20,7 +20,7 @@ builder.Services.Configure<JsonOptions>(options =>
 builder.Configuration.AddJsonFile("tokensettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddJsonFile("credentials.json", optional: false, reloadOnChange: true);
 
-builder.Services.AddAutomatedRequestValidation();
+builder.Services.AddValidators();
 builder.Services.AddProblemDetails();
 builder.Services.AddInfrastructureConfigSections(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -28,6 +28,7 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddBackgroundJobs(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

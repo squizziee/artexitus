@@ -26,6 +26,7 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
             catch (Exception exception)
             {
                 var status = StatusCodes.Status418ImATeapot;
+                var message = exception.Message;
 
                 switch (exception)
                 {
@@ -55,6 +56,7 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
 
                     case DbUpdateException:
                         status = StatusCodes.Status409Conflict;
+                        message = "Invalid request";
                         break;
                 }
 
@@ -63,7 +65,7 @@ namespace Artexitus.IdentityMicroservice.API.Middleware
                 var problemDetails = new ProblemDetails
                 {
                     Status = status,
-                    Title = exception.Message,
+                    Title = message,
                 };
 
                 context.Response.StatusCode = status;
