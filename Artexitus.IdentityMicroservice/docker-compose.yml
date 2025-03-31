@@ -1,0 +1,76 @@
+services:
+  artexitus.identitymicroservice.api:
+    image: ${DOCKER_REGISTRY-}artexitusidentitymicroserviceapi
+    build:
+      context: ..
+      dockerfile: Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Dockerfile
+    depends_on:
+       - identity_microservice_database
+       - hangfire_database
+       - redis_cache
+
+  identity_microservice_database:
+      image: mcr.microsoft.com/mssql/server:2022-latest
+      container_name: identity_microservice_database
+      environment:
+        SA_PASSWORD: "Strong@Password227"
+        ACCEPT_EULA: "Y"
+        MSSQL_DATABASE: "Default"
+      ports:
+        - "1433:1433"
+      restart: always
+      volumes:
+        - identity_microservice_volume:/var/opt/mssql
+
+  hangfire_database:
+      image: mcr.microsoft.com/mssql/server:2022-latest
+      container_name: hangfire_database
+      environment:
+        SA_PASSWORD: "Strong@Password227"
+        ACCEPT_EULA: "Y"
+        MSSQL_DATABASE: "HangfireDefault"
+      ports:
+        - "9998:1433"
+      restart: always
+      volumes:
+        - hangfire_volume:/var/opt/mssql
+
+  redis_cache:
+    image: redis:latest
+    restart: always
+    ports:
+        - "6379:6379"
+    volumes:
+        - redis_volume:/data
+    
+
+#   problem_microservice_database:
+#       image: mcr.microsoft.com/mssql/server:2022-latest
+#       container_name: problem_microservice_database
+#       environment:
+#           SA_PASSWORD: "${DEFAULT_MSSQL_PASSWORD}"
+#           ACCEPT_EULA: "Y"
+#       ports:
+#           - "${PROBLEM_MICROSERVICE_DATABASE_PORT}:${DATABASE_PORT_INTERNAL}"
+#       restart: always
+#       volumes:
+#           - problem_microservice_volume:/var/opt/mssql
+
+#   execution_microservice_database:
+#       image: mongo:latest
+#       container_name: execution_microservice_database
+#       ports:
+#           - "${EXECUTION_MICROSERVICE_DATABASE_PORT}:${EXECUTION_MICROSERVICE_DATABASE_PORT_INTERNAL}"
+#       restart: always
+#       environment:
+#           - MONGO_INITDB_ROOT_USERNAME=${MONGO_DEFAULT_USERNAME}
+#           - MONGO_INITDB_ROOT_PASSWORD=${MONGO_DEFAULT_PASSWORD}
+#       volumes:
+#             - execution_microservice_volume:/data/db
+
+volumes:
+    identity_microservice_volume:
+    hangfire_volume:
+    redis_volume:
+    #problem_microservice_volume:
+    #execution_microservice_volume:

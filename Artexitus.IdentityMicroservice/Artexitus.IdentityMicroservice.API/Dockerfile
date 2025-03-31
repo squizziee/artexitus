@@ -1,29 +1,26 @@
-# См. статью по ссылке https://aka.ms/customizecontainer, чтобы узнать как настроить контейнер отладки и как Visual Studio использует этот Dockerfile для создания образов для ускорения отладки.
-
-# Этот этап используется при запуске из VS в быстром режиме (по умолчанию для конфигурации отладки)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 5000
-EXPOSE 5001
+EXPOSE 8080
+EXPOSE 8081
 
 
-# Этот этап используется для сборки проекта службы
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj", "Artexitus.IdentityMicroservice.API/"]
-RUN dotnet restore "./Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj"
+COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/"]
+COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Application/Artexitus.IdentityMicroservice.Application.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Application/"]
+COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Contracts/Artexitus.IdentityMicroservice.Contracts.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Contracts/"]
+COPY ["Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Domain/Artexitus.IdentityMicroservice.Domain.csproj", "Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.Domain/"]
+RUN dotnet restore "./Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API/Artexitus.IdentityMicroservice.API.csproj"
 COPY . .
-WORKDIR "/src/Artexitus.IdentityMicroservice.API"
+WORKDIR "/src/Artexitus.IdentityMicroservice/Artexitus.IdentityMicroservice.API"
 RUN dotnet build "./Artexitus.IdentityMicroservice.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Artexitus.IdentityMicroservice.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# Этот этап используется в рабочей среде или при запуске из VS в обычном режиме (по умолчанию, когда конфигурация отладки не используется)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

@@ -6,13 +6,22 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>3b75e46e-dfca-4344-b538-5c6ee155b5da</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="Google.Protobuf" Version="3.30.1" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.70.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.70.0" />
     <PackageReference Include="Grpc.Tools" Version="2.71.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -21,12 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Artexitus.IdentityMicroservice.Application\Artexitus.IdentityMicroservice.Application.csproj" />
     <ProjectReference Include="..\Artexitus.IdentityMicroservice.Contracts\Artexitus.IdentityMicroservice.Contracts.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Domain\Artexitus.IdentityMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\Artexitus.IdentityMicroservice.Infrastructure\Artexitus.IdentityMicroservice.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
