@@ -1,0 +1,6 @@
+services:
+  artexitus.problemmicroservice.api:
+    image: ${DOCKER_REGISTRY-}artexitusproblemmicroserviceapi
+    build:
+      context: ..
+      dockerfile: Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.API/Dockerfile

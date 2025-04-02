@@ -4,20 +4,18 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5000
+EXPOSE 5001
 
 
 # Этот этап используется для сборки проекта службы
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.API/Artexitus.ProblemMicroservice.API.csproj", "Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.API/"]
-COPY ["Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.Application/Artexitus.ProblemMicroservice.Application.csproj", "Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.Application/"]
-COPY ["Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.Infrastructure/Artexitus.ProblemMicroservice.Infrastructure.csproj", "Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.Infrastructure/"]
-RUN dotnet restore "./Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.API/Artexitus.ProblemMicroservice.API.csproj"
+COPY ["Artexitus.ProblemMicroservice.API/Artexitus.ProblemMicroservice.API.csproj", "Artexitus.ProblemMicroservice.API/"]
+RUN dotnet restore "./Artexitus.ProblemMicroservice.API/Artexitus.ProblemMicroservice.API.csproj"
 COPY . .
-WORKDIR "/src/Artexitus.ProblemMicroservice/Artexitus.ProblemMicroservice.API"
+WORKDIR "/src/Artexitus.ProblemMicroservice.API"
 RUN dotnet build "./Artexitus.ProblemMicroservice.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
