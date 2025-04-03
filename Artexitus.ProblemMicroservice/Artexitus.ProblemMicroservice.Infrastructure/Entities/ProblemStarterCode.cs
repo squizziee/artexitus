@@ -6,5 +6,6 @@
         public Problem Problem { get; set; }
         public Guid LanguageId { get; set; }
         public ProgrammingLanguage Language { get; set; }
+        public string SourceCode { get; set; } = string.Empty;
     }
 }

@@ -8,6 +8,10 @@ namespace Artexitus.ProblemMicroservice.Infrastructure.Entities
         public string MarkdownDescription { get; set; } = string.Empty;
         public int SequenceNumber { get; set; }
         public ProblemDifficulty Difficulty { get; set; }
-        // statictics there
+        public IEnumerable<ProgrammingLanguage> SupportedLanguages { get; set; } = [];
+        public GeneralProblemStatistics GeneralStatistics { get; set; }
+        public IEnumerable<ProgrammingLanguage> Statistics { get; set; } = [];
+        public IEnumerable<Submission> Submissions { get; set; } = [];
+        public IEnumerable<SuccesfulSubmission> SuccessfulSubmissions { get; set; } = [];
     }
 }
