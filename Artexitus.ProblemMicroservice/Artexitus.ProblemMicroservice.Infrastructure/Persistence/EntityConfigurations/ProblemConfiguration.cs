@@ -38,13 +38,13 @@ namespace Artexitus.ProblemMicroservice.Infrastructure.Persistence.EntityConfigu
                     builder =>
                     {
                         builder
-                            .OwnsMany("ProblemStatisticsBin", "DistributionByTimeElapsed", b =>
+                            .OwnsMany(ps => ps.DistributionByTimeElapsed, b =>
                             {
                                 b.ToJson();
                             });
 
                         builder
-                            .OwnsMany("ProblemStatisticsBin", "DistributionBySpaceElapsed", b =>
+                            .OwnsMany(ps => ps.DistributionBySpaceElapsed, b =>
                             {
                                 b.ToJson();
                             });
